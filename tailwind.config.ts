@@ -55,7 +55,10 @@ const config: Config = {
   			lg: 'var(--radius)',
   			md: 'calc(var(--radius) - 2px)',
   			sm: 'calc(var(--radius) - 4px)'
-  		}
+  		},
+		screens: {
+		'mobile-landscape': {'raw': '(max-height: 500px) and (orientation: landscape)'},
+		},
   	}
   },
   plugins: [require("tailwindcss-animate")],

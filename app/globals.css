@@ -89,4 +89,101 @@ body {
   font-family: 'Qualy', sans-serif;
   line-height: 1.5; /* Interlignage */
   letter-spacing: 0.01em; /* Interlettrage */
+  font-weight: bold;
+}
+
+@font-face {
+  font-family: 'Quantico';
+  src: url('/Fonts/Quantico-Bold.otf') format('opentype');
+  font-weight: 700;
+  font-style: normal;
+}
+
+.quantico-title {
+  font-family: 'Quantico';
+  font-weight: 700;
+}
+
+@font-face {
+  font-family: 'Quantico';
+  src: url('/Fonts/Quantico-Bold.otf') format('opentype');
+}
+
+.quantico {
+  font-family: 'Quantico';
+}
+
+
+@font-face {
+  font-family: 'PPTelegraf';
+  src: url('/Fonts/PPTelegraf-Regular.otf') format('opentype');
+  font-weight: bold;
+  font-style: normal;
+}
+.pp-telegraf {
+  font-family: 'PPTelegraf-UltraBold', sans-serif;
+}
+
+@font-face {
+  font-family: 'PPTelegraf-UltraBold';
+  src: url('/Fonts/PPTelegraf-UltraBold.otf') format('opentype');
+}
+
+.pp-telegraf-bold {
+  font-family: 'PPTelegraf-UltraBold', sans-serif;
+}
+
+.scoreboard-list li {
+  transition: all 0.3s ease;
+}
+/* styles.css */
+.score-row {
+  transition: transform 0.7s ease; /* Durée et type de transition */
+}
+
+/* Supprimez les anciennes règles de blur et d'overlay */
+
+/* Ajoutez ces nouvelles règles */
+.app-container {
+  position: relative;
+  width: 100%;
+  height: 100vh;
+}
+
+.non-blurred-elements {
+  position: relative;
+  z-index: 1001;
+}
+
+.blurred-content {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  filter: blur(5px);
+}
+
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 999;
+}
+
+/* Assurez-vous que ces éléments ne sont jamais floutés */
+.guide-container,
+.language-selector-container {
+  position: relative;
+  z-index: 1001;
+  filter: none !important;
+}
+
+.guide-container {
+  position: relative;
+  z-index: 1001;
+  filter: none !important;
 }
