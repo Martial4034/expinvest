@@ -164,7 +164,7 @@ export function GameSelection({ activeIds }: GameSelectionProps) {
                       alt={games[2].name}
                       width={320}
                       height={320}
-                      className={`w-full h-full object-cover transition-transform duration-100 ${activeIds.includes(2) && !isHovered ? 'animate-pulse' : ''}`}
+                      className={`w-full h-full object-cover transition-transform duration-1000 ${activeIds.includes(3) && !isHovered ? 'animate-pulse' : ''}`}
                     />
                   </div>
                 </Card>

@@ -1,5 +1,3 @@
-// FlappyBirdGame.tsx
-
 "use client";
 
 import React, { useState, useEffect, useCallback } from 'react';
@@ -9,7 +7,8 @@ import { GameCanvas } from './components/GameCanvas';
 import { GameOverlay } from './components/GameOverlay';
 import { Scoreboard } from './Scoreboard';
 import { VersusDisplay } from './VersusDisplay';
-import { OXLTBalanceDisplay } from './OXLTBalanceDisplay';
+import { useOXLTBalance } from '@/app/components/Flappy/hooks/useOXLTBalance';
+import { useGuide } from '@/app/context/GuideContext';
 import { 
   GAME_STATES, 
   REVIVE_COST, 
@@ -24,6 +23,7 @@ import Image from 'next/image';
 const FlappyBirdGame: React.FC = () => {
   const { assets, sounds } = useGameAssets();
   const gameState = useGameState();
+  const { incrementStep } = useGuide();
     
   // Déplacer les déclarations d'état au début
   const [isBetMode, setIsBetMode] = useState(false);
@@ -38,6 +38,7 @@ const FlappyBirdGame: React.FC = () => {
     { pseudo: "Elon", score: 6 },
     { pseudo: "CZ", score: 1 }
   ]);
+  const displayBalance = useOXLTBalance();
 
   // Maintenant checkCollision peut utiliser isBetMode
   const checkCollision = useCallback((): boolean => {
@@ -59,13 +60,26 @@ const FlappyBirdGame: React.FC = () => {
 
     if (hasCollision) {
       if (isBetMode) {
+        // Ajouter 1200 OXLT au solde actuel
+        const currentBalance = parseInt(localStorage.getItem("oxltBalance") || "0");
+        const newBalance = currentBalance + 1200;
+        localStorage.setItem("oxltBalance", newBalance.toString());
+        
         gameState.state.setGameState(GAME_STATES.SPECIAL_WIN);
         return false;
+      } else {
+        // Si le joueur meurt après avoir utilisé revive
+        if (gameState.state.reviveUsed) {
+          const guideStep = parseInt(localStorage.getItem('guideStep') || '0', 10);
+          if (guideStep === 11) {
+            incrementStep();
+          }
+        }
+        return true;
       }
-      return true;
     }
     return false;
-  }, [assets.groundImage, assets.pipeTopImage, gameState.refs.birdYRef, gameState.refs.pipesRef, gameState.state, isBetMode]);
+  }, [assets.groundImage, assets.pipeTopImage, gameState.refs.birdYRef, gameState.refs.pipesRef, gameState.state, isBetMode, incrementStep]);
 
   // État pour le scoreboard avec le score du joueur
   const userPseudo = "You";
@@ -123,6 +137,10 @@ const FlappyBirdGame: React.FC = () => {
         
       case GAME_STATES.PLAY:
         if (gameState.refs.birdYRef.current > 0) {
+          const guideStep = parseInt(localStorage.getItem('guideStep') || '0', 10);
+          if (guideStep === 8) {
+            incrementStep();
+          }
           sounds.sfxFlapRef.current?.play();
           gameState.refs.birdSpeedRef.current = BIRD_CONFIG.THRUST;
         }
@@ -202,6 +220,10 @@ const FlappyBirdGame: React.FC = () => {
         if (checkCollision()) {
           sounds.sfxHitRef.current?.play();
           gameState.state.setGameState(GAME_STATES.GAME_OVER);
+          const guideStep = parseInt(localStorage.getItem('guideStep') || '0', 10);
+          if (guideStep === 9) {
+            incrementStep();
+          }
           gameState.state.setIsGameOver(true);
         }
       }
@@ -227,13 +249,18 @@ const FlappyBirdGame: React.FC = () => {
   ]);
 
   const handlePari = () => {
+    const guideStep = parseInt(localStorage.getItem('guideStep') || '0', 10);
+    if (guideStep === 12) {
+      incrementStep();
+    }
+    
     // Réinitialiser la position de l'oiseau dès le clic sur pari
     gameState.refs.birdYRef.current = BIRD_CONFIG.START_Y;
     gameState.refs.birdSpeedRef.current = 0;
     gameState.refs.birdRotationRef.current = 0;
     gameState.refs.pipesRef.current = [];
     
-    setIsBetMode(true); // Activer le mode pari
+    setIsBetMode(true);
     gameState.state.setGameState(GAME_STATES.WAITING_BET);
     setShowBetOverlay(true);
   };
@@ -250,13 +277,18 @@ const FlappyBirdGame: React.FC = () => {
   };
 
   const handleNext = () => {
+    const guideStep = parseInt(localStorage.getItem('guideStep') || '0', 10);
+    if (guideStep === 14) {
+      incrementStep();
+    }
+    
     resetGameState();
     gameState.state.setGameState(GAME_STATES.GET_READY);
     setShowBetOverlay(false);
     setIsSearching(false);
     setSearchStep(1);
     setCountdown(null);
-    setIsBetMode(false); // Désactiver le mode pari
+    setIsBetMode(false);
   };
 
   const resetGameState = () => {
@@ -277,6 +309,10 @@ const FlappyBirdGame: React.FC = () => {
     const currentBalance = parseInt(localStorage.getItem("oxltBalance") || "0");
     
     if (currentBalance >= REVIVE_COST && !gameState.state.reviveUsed) {
+      const guideStep = parseInt(localStorage.getItem('guideStep') || '0', 10);
+      if (guideStep === 10) {
+        incrementStep();
+      }
       // Mettre à jour le solde dans le localStorage
       const newBalance = currentBalance - REVIVE_COST;
       localStorage.setItem("oxltBalance", newBalance.toString());
@@ -296,8 +332,21 @@ const FlappyBirdGame: React.FC = () => {
   };
 
   const handleBetClick = () => {
+    const guideStep = parseInt(localStorage.getItem('guideStep') || '0', 10);
+    if (guideStep === 13) {
+      incrementStep();
+    }
+
+    // Enlever 600 OXLT au solde actuel
+    const currentBalance = parseInt(localStorage.getItem("oxltBalance") || "0");
+    const newBalance = currentBalance - 600;
+    localStorage.setItem("oxltBalance", newBalance.toString());
     setShowBetOverlay(false);
     setIsSearching(true);
+    
+    // Réinitialiser le score
+    gameState.state.setScore(0);
+    gameState.refs.scoreRef.current = 0;
     
     // Réinitialiser la position de l'oiseau
     gameState.refs.birdYRef.current = BIRD_CONFIG.START_Y;
@@ -352,7 +401,7 @@ const FlappyBirdGame: React.FC = () => {
         />
         
         {/* Overlays sur le canvas */}
-        {gameState.state.gameState === GAME_STATES.WAITING_BET && (
+        {gameState.state.gameState === GAME_STATES.WAITING_BET && !isSearching && countdown === null && (
           <div className="absolute inset-0 bg-black bg-opacity-50 flex flex-col items-center justify-start pt-20">
             <h2 className="text-white text-2xl mb-4">En attente de votre pari</h2>
             <p className="text-white text-xl mb-8">Veuillez parier sur le tableau à droite</p>
@@ -414,10 +463,6 @@ const FlappyBirdGame: React.FC = () => {
 
       {/* Zone droite pour le scoreboard ou le versus display */}
       <div className="flex flex-col items-center">
-        <div className="mb-4">
-          <OXLTBalanceDisplay isFlappyPage={true} />
-        </div>
-        
         {showBetOverlay ? (
           <div 
             className={`bg-[#4695c6] shadow-lg ml-4 mt-[-15px] relative`}
@@ -426,7 +471,7 @@ const FlappyBirdGame: React.FC = () => {
             {/* En-tête avec le nombre d'OXLT */}
             <div className="relative bg-white p-3 flex justify-center items-center h-[50px]">
               <span className="text-[#4695c6] text-4xl py-2 quantico">
-                You have 1,000
+                You have {displayBalance}
               </span>
             </div>
 

@@ -2,6 +2,7 @@ import React from "react";
 import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
 import { CANVAS_WIDTH, CANVAS_HEIGHT } from "./constants";
+import { useOXLTBalance } from '@/app/components/Flappy/hooks/useOXLTBalance';
 
 interface ScoreboardProps {
   scoreboardData: Array<{ pseudo: string; score: number }>;
@@ -13,6 +14,7 @@ export const Scoreboard: React.FC<ScoreboardProps> = ({
   userPseudo,
 }) => {
   const topFiveScores = scoreboardData.slice(0, 5);
+  const displayBalance = useOXLTBalance();
 
   return (
     <div
@@ -22,7 +24,7 @@ export const Scoreboard: React.FC<ScoreboardProps> = ({
       {/* En-tête avec le nombre d'OXLT */}
       <div className="relative bg-white p-3 flex justify-center items-center h-[50px]">
         <span className="text-[#4695c6] text-4xl py-2 quantico">
-          You have 1,000
+          You have {displayBalance}
         </span>
       </div>
 

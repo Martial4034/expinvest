@@ -63,7 +63,7 @@ export function OxeltaTabs() {
                 stiffness: 100,
                 damping: 20
               }}
-              className="p-2 md:p-8 mobile-landscape:p-0 h-full md:min-h-[400px]"
+              className="p-2 md:p-8 mobile-landscape:p-0 h-full md:min-h-[415px]"
             >
               {renderContent()}
             </motion.div>

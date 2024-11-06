@@ -30,7 +30,7 @@ export const guideData: GuideStep[] = [
     step: 2,
     messages: {
       en: "",
-      fr: "Je suis Sir Oxo, appuyer sur moi pour obtenir de l’aide si besoin."
+      fr: "Je suis Sir Oxo, appuyer sur moi pour obtenir de l&apos;aide si besoin."
     },
     showMessage: true
   },
@@ -38,7 +38,7 @@ export const guideData: GuideStep[] = [
     step: 3,
     messages: {
       en: "",
-      fr: "Pour commencer {PSEUDO}, aller sur l’application Oxelta."
+      fr: "Pour commencer {PSEUDO}, aller sur l&apos;application Oxelta."
     },
     showMessage: true
   },
@@ -46,48 +46,120 @@ export const guideData: GuideStep[] = [
     step: 4,
     messages: {
       en: "",
-      fr: ""
+      fr: "Cliquez sur le bouton OXELTA. (logo le plus à gauche)"
     },
     showMessage: false,
-    timer: 15
+    timer: 20
   },
   {
     step: 5,
     messages: {
       en: "",
-      fr: "Cliquez sur le bouton OXELTA."
+      fr: "Achetez des OXLT sur la page dédiée en cliquant sur le bouton &apos;BUY&apos;"
     },
     showMessage: false,
-    timer: 15
+    timer: 5
   },
   {
     step: 6,
     messages: {
       en: "",
-      fr: "Cliquez sur le bouton BUY."
+      fr: "Vous pouvez utilisez vos OXLT dans nos Jeux"
     },
     showMessage: false,
-    timer: 15
+    menu: true,
+    timer: 5
   },
   {
     step: 7,
     messages: {
       en: "",
-      fr: "Vous pouvez maintenant les utilisés IN-GAME"
+      fr: "Ouvrez l&apos;application Flappy Oxo"
     },
     showMessage: false,
-    menu: true,
-    timer: 4,
+    timer: 2,
   },
   {
     step: 8,
     messages: {
       en: "",
-      fr: "Cliquez sur le bouton OXELTA."
+      fr: "Jouer une partie de Flappy Oxo"
     },
     showMessage: false,
+    timer: 1,
     menu: false,
-    timer: 5,
+  },
+  {
+    step: 9,
+    messages: {
+      en: "",
+      fr: "Il semble y avoir un problème avec le jeu, veuillez réessayer en vidant votre stockage local."
+    },
+    showMessage: false,
+    timer: 999,
+  },
+  {
+    step: 10,
+    messages: {
+      en: "",
+      fr: "Cliquez sur Revive coûte 100 OXLT"
+    },
+    showMessage: false,
+    timer: 1,
+  },
+  {
+    step: 11,
+    messages: {
+      en: "",
+      fr: ""
+    },
+    showMessage: false,
+    timer: 999,
+  },
+  {
+    step: 12,
+    messages: {
+      en: "",
+      fr: "Démarrer une partie en ligne en pariant 600 OXLT"
+    },
+    showMessage: false,
+    timer: 1,
+  },
+  {
+    step: 13,
+    messages: {
+      en: "",
+      fr: "Cliquez sur le bouton &apos;PARIER&apos; à droite"
+    },
+    showMessage: false,
+    timer: 1,
+  },
+  {
+    step: 14,
+    messages: {
+      en: "",
+      fr: "Terminer votre partie en ligne"
+    },
+    showMessage: false,
+    timer: 999,
+  },
+  {
+    step: 15,
+    messages: {
+      en: "",
+      fr: "Bravo {PSEUDO} vous avez gagné. Retourner au menu principal."
+    },
+    showMessage: true,
+    menu: true,
+  },
+  {
+    step: 16,
+    messages: {
+      en: "",
+      fr: "Accedez à l&apos;application Under The Clash"
+    },
+    showMessage: false,
+    timer: 10,
   },
 ];
 

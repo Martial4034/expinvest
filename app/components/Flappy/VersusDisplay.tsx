@@ -3,12 +3,14 @@
 import React from 'react';
 import Image from 'next/image';
 import { CANVAS_WIDTH, CANVAS_HEIGHT } from './constants';
+import { useOXLTBalance } from '@/app/components/Flappy/hooks/useOXLTBalance';
 
 interface VersusDisplayProps {
   score: number;
 }
 
 export const VersusDisplay: React.FC<VersusDisplayProps> = ({ score }) => {
+  const displayBalance = useOXLTBalance();
   return (
     <div
       className={`bg-[#4695c6] shadow-lg ml-4 mt-[-15px] relative`}
@@ -17,7 +19,7 @@ export const VersusDisplay: React.FC<VersusDisplayProps> = ({ score }) => {
       {/* En-tête avec le nombre d'OXLT */}
       <div className="relative bg-white p-3 flex justify-center items-center h-[50px]">
         <span className="text-[#4695c6] text-4xl py-2 quantico">
-          You have 1,000
+          You have {displayBalance}
         </span>
       </div>
 

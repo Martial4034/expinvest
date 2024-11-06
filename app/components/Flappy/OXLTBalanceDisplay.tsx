@@ -70,11 +70,6 @@ export const OXLTBalanceDisplay: React.FC<OXLTBalanceDisplayProps> = ({
     <div className={containerClass}>
       <div className="bg-white bg-opacity-50 rounded-lg p-4 border-2 border-blue-500 flex items-center">
         <span className="text-4xl qualy-title">{displayBalance}</span>
-        <img
-          src="/Tabs/Token.gif"
-          alt="OXLT Token"
-          className="w-12 h-12 ml-4"
-        />
       </div>
     </div>
   );

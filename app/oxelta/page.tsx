@@ -10,7 +10,7 @@ export default function OxeltaPage() {
 
   useEffect(() => {
     const guideStep = parseInt(localStorage.getItem('guideStep') || '0', 10);
-    if (guideStep <= 5) {
+    if (guideStep === 4) {
       incrementStep();
     }
   }, [incrementStep]);

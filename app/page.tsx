@@ -15,11 +15,11 @@ const Page: React.FC = () => {
   const [activeIds, setActiveIds] = useState<number[]>([]);
 
   const updateActiveIds = (currentStep: number) => {
-    if (currentStep >= 16) {
+    if (currentStep >= 17) {
       setActiveIds([1, 2, 3]);
-    } else if (currentStep >= 15) {
+    } else if (currentStep >= 16) {
       setActiveIds([3]);
-    } else if (currentStep >= 8) {
+    } else if (currentStep >= 7) {
       setActiveIds([2]);
     } else if (currentStep >= 4) {
       setActiveIds([1]);

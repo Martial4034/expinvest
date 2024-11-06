@@ -11,19 +11,19 @@ interface Game {
 
 const games: Game[] = [
   {
-    logo: "/App/Logo_Flappy_Default.png",
+    logo: "/Tabs/Tab4/icone3.png",
     title: "Flappy Oxo",
     description: "Traversez les tuyaux, grimpez au classement hebdomadaire et gagnez des OXLT.",
     buttonText: "Télécharger"
   },
   {
-    logo: "/App/Logo_Utc1.png",
+    logo: "/Tabs/Tab4/icone1.png",
     title: "Under The Clash",
     description: "Jeu de stratégie où vous développez votre forteresse en pillant vos adversaires.",
     buttonText: "Télécharger"
   },
   {
-    logo: "/App/Logo_Rocket.png",
+    logo: "/Tabs/Tab4/icone2.png",
     title: "Rocket Oxo",
     description: "Allez le plus loin possible, grimpez dans le classement hebdomadaire et gagnez des OXLT.",
     buttonText: "Coming Soon"
@@ -32,16 +32,16 @@ const games: Game[] = [
 
 export default function Tab4Content() {
   return (
-    <div className="flex flex-col space-y-4 md:p-8">
+    <div className="flex flex-col md:p-2">
       {games.map((game, index) => (
         <div key={index} className="flex items-center justify-between w-full">
           <div className="flex items-center gap-4">
             <Image 
               src={game.logo} 
               alt={`${game.title} Logo`} 
-              width={80}
-              height={80}
-              className="w-16 h-16 md:w-20 md:h-20 object-contain rounded-full"
+              width={100}
+              height={100}
+              className="w-20 h-20 md:w-28 md:h-28 object-contain rounded-full"
             />
             <div className="flex flex-col">
               <div className="flex items-center gap-2">
@@ -53,7 +53,7 @@ export default function Tab4Content() {
           </div>
           
           <button 
-            className={`px-6 py-2 rounded-full border-4 border-yellow-400 text-xl md:text-xl pp-telegraf-bold
+            className={`px-6 rounded-full border-4 border-yellow-400 text-xl md:text-xl pp-telegraf-bold
                       ${game.buttonText === 'Coming Soon' 
                         ? 'text-white hover:bg-yellow-400/20' 
                         : 'text-white hover:bg-yellow-400/20'}`}
