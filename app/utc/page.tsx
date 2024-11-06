@@ -13,6 +13,7 @@ interface UnityConfig {
   showBanner?: (msg: string, type: string) => void;
   matchWebGLToCanvasSize?: boolean | number;
   devicePixelRatio?: number;
+  canvas?: HTMLCanvasElement;
 }
 
 interface UnityInstance {
@@ -28,13 +29,13 @@ interface UnityInstance {
 
 declare global {
   function createUnityInstance(
-    canvas: HTMLElement,
+    canvas: HTMLCanvasElement,
     config: UnityConfig
   ): Promise<UnityInstance>;
 }
 
 export default function Page() {
-  const unityContainerRef = useRef<HTMLDivElement>(null);
+  const unityContainerRef = useRef<HTMLCanvasElement>(null);
 
   useEffect(() => {
     const unityContainer = unityContainerRef.current;
@@ -54,10 +55,10 @@ export default function Page() {
           companyName: 'OXELTA',
           productName: 'OXELTA Game',
           productVersion: '1.0',
+          canvas: unityContainer, // Explicitly specify the canvas
         })
           .then((unityInstance: UnityInstance) => {
             console.log('Unity instance created:', unityInstance);
-            // You can now use unityInstance methods here
           })
           .catch((error: Error) => {
             console.error('Unity instance creation failed:', error);
@@ -82,7 +83,8 @@ export default function Page() {
 
   return (
     <div className="flex justify-center items-center h-screen">
-      <div
+      <canvas
+        id="unity-canvas"
         ref={unityContainerRef}
         className="unity-container"
         style={{ width: '960px', height: '600px' }}
