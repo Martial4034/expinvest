@@ -72,18 +72,19 @@ const menuButtonText = {
     marginLeft: '20px',
     fontSize: '25.3px',
     background: 'white',
-    padding: '30px 40px',
-    borderRadius: '4rem',
+    padding: '25px 35px',
+    borderRadius: '4.5rem',
     boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)',
-    maxWidth: '3000px',
-    width: '50vw',
+    minWidth: '500px',
+    maxWidth: '1200px',
+    width: 'auto',
     whiteSpace: 'pre-wrap',
     lineHeight: '1.6',
     zIndex: 1001,
     display: 'flex',
     flexDirection: 'column' as const,
     justifyContent: 'center',
-    minHeight: '200px',
+    minHeight: '100px',
   };
 
   const handleGuideClick = () => {
@@ -104,11 +105,11 @@ const menuButtonText = {
       <div className="guide-container" style={{ 
         position: 'absolute', 
         top: '10vh',
-        left: '10vw',
+        left: '20vw',
         zIndex: 1000,
         display: 'flex',
         alignItems: 'flex-start',
-        maxWidth: '80vw'
+        maxWidth: '75vw'
       }}>
         <motion.img
           src={currentStepData?.showMessage ? '/Guide/Stickers/OxO_3.png' : '/Guide/Stickers/OxO_9.png'}
@@ -202,27 +203,115 @@ const menuButtonText = {
 
         .text-content {
           font-size: 25.3px;
-          line-height: 1.6;
+          line-height: 1.5;
           text-align: left;
           width: 100%;
-          display: block;
+          display: flex;
+          align-items: center;
+          min-height: 50px;
           white-space: pre-wrap;
           word-break: break-word;
           overflow-wrap: break-word;
           hyphens: auto;
+          padding: 5px 0;
+          transform: translateY(2px);
         }
 
         .text-content span {
           display: inline;
         }
 
-        @media (max-width: 768px) {
+        @media (min-width: 1441px) {
           .guide-tooltip {
-            font-size: 20.7px;
-            padding: 20px 25px;
+            font-size: 25.3px;
+            minWidth: '600px';
+            maxWidth: '1200px';
+          }
+        }
+
+        @media (max-width: 1440px) {
+          .guide-tooltip {
+            font-size: 23px;
+            minWidth: '500px';
+            maxWidth: '900px';
           }
           .text-content {
-            font-size: 20.7px;
+            font-size: 23px;
+          }
+        }
+
+        @media (max-width: 1024px) {
+          .guide-tooltip {
+            font-size: 21px;
+            padding: 20px 30px;
+            minWidth: '400px';
+            maxWidth: '700px';
+          }
+          .text-content {
+            font-size: 21px;
+          }
+          .guide-container {
+            left: 15vw !important;
+          }
+        }
+
+        @media (max-width: 768px) {
+          .guide-tooltip {
+            font-size: 20px;
+            padding: 20px 25px;
+            minWidth: '350px';
+            maxWidth: '600px';
+          }
+          .text-content {
+            font-size: 20px;
+          }
+          .guide-container {
+            left: 10vw !important;
+          }
+        }
+
+        @media (max-width: 926px) and (orientation: landscape) {
+          .guide-tooltip {
+            font-size: 18px;
+            padding: 15px 20px;
+            minWidth: '300px';
+            maxWidth: '500px';
+            minHeight: '80px';
+          }
+          .text-content {
+            font-size: 18px;
+          }
+          .guide-container {
+            top: 5vh !important;
+            left: 25vw !important;
+          }
+        }
+
+        @media (max-width: 428px) {
+          .guide-tooltip {
+            font-size: 16px;
+            padding: 15px 20px;
+            minWidth: '250px';
+            maxWidth: '85vw';
+          }
+          .text-content {
+            font-size: 16px;
+          }
+          .guide-container {
+            left: 5vw !important;
+            maxWidth: '90vw';
+          }
+        }
+
+        @media (max-width: 320px) {
+          .guide-tooltip {
+            font-size: 14px;
+            padding: 12px 16px;
+            minWidth: '200px';
+            maxWidth: '90vw';
+          }
+          .text-content {
+            font-size: 14px;
           }
         }
 
@@ -265,6 +354,39 @@ const menuButtonText = {
 
         :global(.language-selector) {
           z-index: 1002 !important;
+        }
+
+        /* Ajustements en fonction de la hauteur de l'écran */
+        @media (max-height: 900px) {
+          .guide-container {
+            top: 7vh !important;
+          }
+        }
+
+        @media (max-height: 800px) {
+          .guide-container {
+            top: 5vh !important;
+          }
+        }
+
+        @media (max-height: 700px) {
+          .guide-container {
+            top: 3vh !important;
+          }
+        }
+
+        /* Pour les écrans très petits en hauteur (mode paysage sur mobile) */
+        @media (max-height: 500px) {
+          .guide-container {
+            top: 2vh !important;
+          }
+        }
+
+        /* Combiner avec les media queries existantes pour la largeur */
+        @media (max-width: 926px) and (orientation: landscape) {
+          .guide-container {
+            top: 2vh !important;
+          }
         }
       `}</style>
     </>

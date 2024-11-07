@@ -156,7 +156,7 @@ export const guideData: GuideStep[] = [
     step: 16,
     messages: {
       en: "",
-      fr: "Accedez à l&apos;application Under The Clash"
+      fr: "Accedez à l&apos;application Under The Clash."
     },
     showMessage: false,
     timer: 10,
