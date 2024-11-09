@@ -1,6 +1,7 @@
 import React from 'react';
 import { GAME_STATES, REVIVE_COST } from '../constants';
 import type { GameState } from '../types';
+import { useGuide } from '@/app/context/GuideContext';
 
 interface GameOverlayProps {
   gameState: GameState;
@@ -20,7 +21,7 @@ export const GameOverlay: React.FC<GameOverlayProps> = ({
   if (gameState.state.gameState !== GAME_STATES.GAME_OVER) {
     return null;
   }
-
+  const { step: guideStep } = useGuide();
   return (
     <>
       {showControls && (
@@ -39,43 +40,46 @@ export const GameOverlay: React.FC<GameOverlayProps> = ({
             </div>
 
             {/* Revive Button - only show if not used */}
-            {!gameState.state.reviveUsed && (
+            {!gameState.state.reviveUsed && guideStep !== 13 && (
               <button
                 onClick={(e) => {
                   e.stopPropagation();
                   handleRevive();
                 }}
-                className="flex flex-col items-center justify-center text-2xl 
-                         bg-[url('/Texture/Cloud.png')] bg-center text-black
-                         p-4 rounded-lg border-2 border-black min-w-[150px] mb-4"
+                className="px-8 py-4 rounded-full border-4 border-purple-500 text-2xl pp-telegraf-bold
+                          bg-black/30 text-white hover:bg-purple-500/20 transition-all duration-200 mb-4"
               >
-                <span className="qualy-title">
-                  REVIVE ({REVIVE_COST} OXLT)
-                </span>
+                REVIVE ({REVIVE_COST} OXLT)
               </button>
             )}
 
             {/* Play Again Button */}
-            <button
-              onClick={(e) => {
-                e.stopPropagation();
-                handlePlay();
-              }}
-              className="bg-blue-500 text-white p-4 rounded-lg border-2 border-black mb-4"
-            >
-              Click to play
-            </button>
+            {(guideStep !== 11 && guideStep !== 13) && (
+              <button
+                onClick={(e) => {
+                  e.stopPropagation();
+                  handlePlay();
+                }}
+                className="px-8 py-4 rounded-full border-4 text-nowrap border-blue-400 text-2xl pp-telegraf-bold
+                          bg-black/30 text-white hover:bg-blue-400/20 transition-all duration-200 mb-4"
+              >
+                Click to play
+              </button>
+            )}
 
             {/* Pari Button */}
-            <button
-              onClick={(e) => {
-                e.stopPropagation();
-                handlePari();
-              }}
-              className="bg-green-500 text-white p-4 rounded-lg border-2 border-black"
-            >
-              PARI
-            </button>
+            {(guideStep !== 11) && (
+              <button
+                onClick={(e) => {
+                  e.stopPropagation();
+                  handlePari();
+                }}
+                className="px-8 py-4 rounded-full border-4 border-green-400 text-2xl pp-telegraf-bold
+                          bg-black/30 text-white hover:bg-green-400/20 transition-all duration-200"
+              >
+                PARI
+              </button>
+            )}
           </div>
         </div>
       )}

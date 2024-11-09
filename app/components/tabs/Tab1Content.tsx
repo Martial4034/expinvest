@@ -9,7 +9,7 @@ export default function Tab1Content() {
 
   const handleBuyClick = () => {
     const guideStep = parseInt(localStorage.getItem('guideStep') || '0', 10);
-    if (guideStep === 5) {
+    if (guideStep === 6) {
       localStorage.setItem('oxltBalance', '1000');
       incrementStep();
     }

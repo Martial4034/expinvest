@@ -62,12 +62,9 @@ export const OXLTBalanceDisplay: React.FC<OXLTBalanceDisplayProps> = ({
     };
   }, []);
 
-  const containerClass = isFlappyPage
-    ? "fixed bottom-4 right-4 z-50"
-    : "w-1/4 p-4 flex flex-col items-center justify-center";
 
   return (
-    <div className={containerClass}>
+    <div className={"flex items-center justify-center mb-5"}>
       <div className="bg-white bg-opacity-50 rounded-lg p-4 border-2 border-blue-500 flex items-center">
         <span className="text-4xl qualy-title">{displayBalance}</span>
       </div>

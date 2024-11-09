@@ -71,7 +71,7 @@ const FlappyBirdGame: React.FC = () => {
         // Si le joueur meurt après avoir utilisé revive
         if (gameState.state.reviveUsed) {
           const guideStep = parseInt(localStorage.getItem('guideStep') || '0', 10);
-          if (guideStep === 11) {
+          if (guideStep === 12) {
             incrementStep();
           }
         }
@@ -138,7 +138,7 @@ const FlappyBirdGame: React.FC = () => {
       case GAME_STATES.PLAY:
         if (gameState.refs.birdYRef.current > 0) {
           const guideStep = parseInt(localStorage.getItem('guideStep') || '0', 10);
-          if (guideStep === 8) {
+          if (guideStep === 9) {
             incrementStep();
           }
           sounds.sfxFlapRef.current?.play();
@@ -221,7 +221,7 @@ const FlappyBirdGame: React.FC = () => {
           sounds.sfxHitRef.current?.play();
           gameState.state.setGameState(GAME_STATES.GAME_OVER);
           const guideStep = parseInt(localStorage.getItem('guideStep') || '0', 10);
-          if (guideStep === 9) {
+          if (guideStep === 10) {
             incrementStep();
           }
           gameState.state.setIsGameOver(true);
@@ -250,7 +250,7 @@ const FlappyBirdGame: React.FC = () => {
 
   const handlePari = () => {
     const guideStep = parseInt(localStorage.getItem('guideStep') || '0', 10);
-    if (guideStep === 12) {
+    if (guideStep === 13) {
       incrementStep();
     }
     
@@ -278,7 +278,7 @@ const FlappyBirdGame: React.FC = () => {
 
   const handleNext = () => {
     const guideStep = parseInt(localStorage.getItem('guideStep') || '0', 10);
-    if (guideStep === 14) {
+    if (guideStep === 15) {
       incrementStep();
     }
     
@@ -310,7 +310,7 @@ const FlappyBirdGame: React.FC = () => {
     
     if (currentBalance >= REVIVE_COST && !gameState.state.reviveUsed) {
       const guideStep = parseInt(localStorage.getItem('guideStep') || '0', 10);
-      if (guideStep === 10) {
+      if (guideStep === 11) {
         incrementStep();
       }
       // Mettre à jour le solde dans le localStorage
@@ -333,7 +333,7 @@ const FlappyBirdGame: React.FC = () => {
 
   const handleBetClick = () => {
     const guideStep = parseInt(localStorage.getItem('guideStep') || '0', 10);
-    if (guideStep === 13) {
+    if (guideStep === 14) {
       incrementStep();
     }
 

@@ -2,14 +2,35 @@
 
 import { useEffect } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
+import { useGuide } from "@/app/context/GuideContext";
 
 const useUsername = () => {
   const router = useRouter();
   const searchParams = useSearchParams();
+  const { step, incrementStep } = useGuide();
 
   useEffect(() => {
+    const processLanguage = () => {
+      const lang = searchParams?.get('lang');
+      let needsRefresh = false;
+      
+      if (lang) {
+        if (lang === 'en') {
+          localStorage.setItem('languageSelected', 'en');
+          if (step === 1) incrementStep();
+          needsRefresh = true;
+        } else if (lang === 'fr') {
+          localStorage.setItem('languageSelected', 'fr');
+          if (step === 1) incrementStep();
+          needsRefresh = true;
+        }
+      }
+      return needsRefresh;
+    };
+
     const processEmail = () => {
       const email = searchParams?.get('email');
+      let needsRefresh = false;
 
       if (email) {
         // Validation de l'email
@@ -18,12 +39,10 @@ const useUsername = () => {
 
         if (isValidEmail) {
           if (/^[a-zA-Z]+[0-9]*@gmail\.com$/.test(email)) {
-            // Exemple : john123@gmail.com => John
             const namePart = email.split('@')[0];
             const nameWithoutNumbers = namePart.replace(/[0-9]+$/, '');
             pseudo = capitalizeFirstLetter(nameWithoutNumbers);
           } else {
-            // Cas général : extraire les parties du nom
             const namePart = email.split('@')[0];
             const nameParts = namePart.split(/[._]/).filter(part => part);
 
@@ -37,36 +56,40 @@ const useUsername = () => {
           pseudo = 'POTENTIEL INVESTISSEUR';
         }
 
-        // Si aucun pseudo n'est défini, définir le pseudo par défaut
         if (!pseudo) {
           pseudo = 'POTENTIEL INVESTISSEUR';
         }
 
-        // Stocker le pseudo et l'email dans le stockage local
         localStorage.setItem('PSEUDO', pseudo);
         if (isValidEmail) {
           localStorage.setItem('EMAIL', email);
         } else {
           localStorage.setItem('EMAIL', '');
         }
-
-        // Rediriger vers la page classique sans les paramètres
-        router.push('/');
+        needsRefresh = true;
       } else {
-        // Si aucun email n'est présent, définir le pseudo par défaut si non déjà défini
         const existingPseudo = localStorage.getItem('PSEUDO');
         if (!existingPseudo) {
           localStorage.setItem('PSEUDO', 'POTENTIEL INVESTISSEUR');
           localStorage.setItem('EMAIL', '');
         }
       }
+      return needsRefresh;
     };
 
-    processEmail();
-  }, [router, searchParams]);
+    const langNeedsRefresh = processLanguage();
+    const emailNeedsRefresh = processEmail();
+
+    if (langNeedsRefresh || emailNeedsRefresh) {
+      router.push('/');
+      // Petit délai pour s'assurer que la redirection est initiée
+      setTimeout(() => {
+        window.location.reload();
+      }, 100);
+    }
+  }, [router, searchParams, step, incrementStep]);
 };
 
-// Fonction pour capitaliser la première lettre
 const capitalizeFirstLetter = (string: string) => {
   if (!string) return '';
   return string.charAt(0).toUpperCase() + string.slice(1);

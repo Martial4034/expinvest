@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useRef } from 'react';
+import { useGuide } from "@/app/context/GuideContext";
 
 interface UnityConfig {
   dataUrl: string;
@@ -35,7 +36,16 @@ declare global {
 }
 
 export default function Page() {
+  const { incrementStep } = useGuide();
   const unityContainerRef = useRef<HTMLCanvasElement>(null);
+
+  useEffect(() => {
+    const guideStep = parseInt(localStorage.getItem('guideStep') || '0', 10);
+    if (guideStep === 17) {
+      incrementStep();
+    }
+  }, [incrementStep]);
+
 
   useEffect(() => {
     const unityContainer = unityContainerRef.current;

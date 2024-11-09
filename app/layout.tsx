@@ -3,7 +3,6 @@
 import "./globals.css";
 import { GuideProvider } from "@/app/context/GuideContext";
 import Guide from "@/app/components/guide/Guide";
-import LanguageSelector from "@/app/components/LanguageSelector";
 
 export default function RootLayout({
   children,
@@ -17,7 +16,6 @@ export default function RootLayout({
           <div className="app-container">
             <div className="non-blurred-elements">
               <Guide />
-              <LanguageSelector />
             </div>
             <div className="">
               {children}

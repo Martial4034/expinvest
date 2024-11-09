@@ -18,7 +18,7 @@ export const Scoreboard: React.FC<ScoreboardProps> = ({
 
   return (
     <div
-      className={`bg-[#4695c6] shadow-lg ml-4 mt-[-15px] relative`}
+      className={`bg-[#4695c6] shadow-lg ml-4 mt-[0px] relative`}
       style={{ width: CANVAS_WIDTH, height: CANVAS_HEIGHT }}
     >
       {/* En-tête avec le nombre d'OXLT */}

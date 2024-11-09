@@ -121,7 +121,7 @@ body {
   font-style: normal;
 }
 .pp-telegraf {
-  font-family: 'PPTelegraf-UltraBold', sans-serif;
+  font-family: 'PPTelegraf', sans-serif;
 }
 
 @font-face {
@@ -132,7 +132,6 @@ body {
 .pp-telegraf-bold {
   font-family: 'PPTelegraf-UltraBold', sans-serif;
 }
-
 .scoreboard-list li {
   transition: all 0.3s ease;
 }

@@ -18,7 +18,7 @@ export const BIRD_CONFIG = {
   GRAVITY: 0.08,
   THRUST: -3,
   START_X: 50,
-  START_Y: 100,
+  START_Y: (CANVAS_HEIGHT / 2) - 12.5,
 };
 
 export const PIPE_CONFIG = {

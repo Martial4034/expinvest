@@ -53,9 +53,9 @@ export default function Tab4Content() {
           </div>
           
           <button 
-            className={`px-6 rounded-full border-4 border-yellow-400 text-xl md:text-xl pp-telegraf-bold
+            className={`px-8 rounded-full border-4 text-nowrap border-yellow-400 md:text-xl pp-telegraf-bold
                       ${game.buttonText === 'Coming Soon' 
-                        ? 'text-white hover:bg-yellow-400/20' 
+                        ? 'text-white hover:bg-yellow-400/20 px-[1.33rem]' 
                         : 'text-white hover:bg-yellow-400/20'}`}
           >
             {game.buttonText}

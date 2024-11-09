@@ -2,7 +2,7 @@
 
 'use client';
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { guideData, GuideStep } from "./guideData";
 import { useGuide } from "@/app/context/GuideContext";
@@ -15,6 +15,9 @@ const Guide: React.FC = () => {
   const [currentStepData, setCurrentStepData] = useState<GuideStep | null>(null);
   const [pseudo, setPseudo] = useState<string>('');
   const [language, setLanguage] = useState<'fr' | 'en'>('fr');
+  const tooltipRef = useRef<HTMLDivElement>(null);
+  const textContentRef = useRef<HTMLDivElement>(null);
+  const [tooltipWidth, setTooltipWidth] = useState('50vw');
 
 const menuButtonText = {
   fr: "Menu principal",
@@ -32,7 +35,7 @@ const menuButtonText = {
       setPseudo(storedPseudo);
     }
   }, []);
-
+  
   useEffect(() => {
     let stepData = guideData.find(gs => gs.step === step);
 
@@ -65,26 +68,25 @@ const menuButtonText = {
   // Message personnalisé avec le pseudo stylisé
   const message = currentStepData?.messages[language].replace(
     '{PSEUDO}',
-    `<span class="qualy-title">${pseudo || 'POTENTIEL INVESTISSEUR'}</span>`
+    `<span>${pseudo || 'POTENTIEL INVESTISSEUR'}</span>`
   );
 
   const tooltipStyles = {
     marginLeft: '20px',
     fontSize: '25.3px',
     background: 'white',
-    padding: '25px 35px',
+    padding: '15px 25px',
     borderRadius: '4.5rem',
     boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)',
-    minWidth: '500px',
+    minWidth: '700px',
     maxWidth: '1200px',
     width: 'auto',
-    whiteSpace: 'pre-wrap',
-    lineHeight: '1.6',
+    whiteSpace: 'normal',
+    lineHeight: '1.4',
     zIndex: 1001,
     display: 'flex',
-    flexDirection: 'column' as const,
-    justifyContent: 'center',
-    minHeight: '100px',
+    alignItems: 'center',
+    minHeight: '70px',
   };
 
   const handleGuideClick = () => {
@@ -100,16 +102,30 @@ const menuButtonText = {
     }, 100);
   };
 
+  useEffect(() => {
+    if (tooltipRef.current && textContentRef.current) {
+      const tooltipContent = textContentRef.current;
+      const tooltip = tooltipRef.current;
+      
+      if (tooltipContent.scrollWidth > tooltipContent.clientWidth) {
+        const extraWidth = tooltipContent.scrollWidth - tooltipContent.clientWidth;
+        const newWidth = tooltip.clientWidth + extraWidth + 20; // +20 pour la marge
+        setTooltipWidth(`${newWidth}px`);
+      }
+    }
+  }, [message, isTooltipVisible]);
+
   return (
     <>
       <div className="guide-container" style={{ 
-        position: 'absolute', 
-        top: '10vh',
-        left: '20vw',
+        position: 'fixed',
+        top: '5vh',
+        left: '15vw',
         zIndex: 1000,
         display: 'flex',
         alignItems: 'flex-start',
-        maxWidth: '75vw'
+        maxWidth: '80vw',
+        width: 'auto'
       }}>
         <motion.img
           src={currentStepData?.showMessage ? '/Guide/Stickers/OxO_3.png' : '/Guide/Stickers/OxO_9.png'}
@@ -132,26 +148,13 @@ const menuButtonText = {
               initial={{ opacity: 0, x: -20 }}
               animate={{ opacity: 1, x: 0 }}
               exit={{ opacity: 0, x: -20 }}
-              style={{
-                ...tooltipStyles,
-                width: '50vw',
-                maxWidth: '3000px',
-                borderRadius: '4rem',
-                marginLeft: '20px',
-                alignSelf: 'center'
-              }}
               className="guide-tooltip"
             >
-              <div 
-                className="text-content"
-                dangerouslySetInnerHTML={{ __html: message || '' }}
-              />
-              <div className="guide-navigation-buttons" style={{ 
-                marginTop: '15px', 
-                display: 'flex', 
-                width: '100%',
-                justifyContent: currentStepData?.menu ? 'center' : 'flex-end'
-              }}>
+              <div className="tooltip-content">
+                <div 
+                  className={`text-content ${(message)}`}
+                  dangerouslySetInnerHTML={{ __html: message || '' }}
+                />
                 {currentStepData?.menu ? (
                   <button 
                     onClick={handleMenuClick}
@@ -197,122 +200,58 @@ const menuButtonText = {
         }
 
         .guide-tooltip {
-          position: relative;
-          font-family: 'PPTelegraf', sans-serif;
+          margin-left: 20px;
+          background: white;
+          padding: 15px 25px;
+          border-radius: 4.5rem;
+          box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+          min-width: 600px;
+          max-width: fit-content;
+          z-index: 1001;
+          display: flex;
+          align-items: center;
+          min-height: 70px;
+        }
+
+        .tooltip-content {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          width: 100%;
         }
 
         .text-content {
-          font-size: 25.3px;
-          line-height: 1.5;
-          text-align: left;
-          width: 100%;
+          font-family: 'PPTelegraf', sans-serif;
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          padding-right: 15px;
+          flex: 1;
+        }
+
+        .text-content.text-normal { font-size: 27px !important; }
+        .text-content.text-md { font-size: 22px !important; }
+        .text-content.text-sm { font-size: 20px !important; }
+        .text-content.text-xs { font-size: 18px !important; }
+
+        .menu-button {
+          border: 4px solid #FFD700;
+          background: transparent;
+          color: black;
+          padding: 8px 20px;
+          border-radius: 9999px;
+          cursor: pointer;
+          font-size: 20px;
+          font-family: 'PPTelegraf', sans-serif;
+          transition: all 0.3s ease;
+          margin-left: 10px;
+          height: 45px;
           display: flex;
           align-items: center;
-          min-height: 50px;
-          white-space: pre-wrap;
-          word-break: break-word;
-          overflow-wrap: break-word;
-          hyphens: auto;
-          padding: 5px 0;
-          transform: translateY(2px);
         }
 
-        .text-content span {
-          display: inline;
-        }
-
-        @media (min-width: 1441px) {
-          .guide-tooltip {
-            font-size: 25.3px;
-            minWidth: '600px';
-            maxWidth: '1200px';
-          }
-        }
-
-        @media (max-width: 1440px) {
-          .guide-tooltip {
-            font-size: 23px;
-            minWidth: '500px';
-            maxWidth: '900px';
-          }
-          .text-content {
-            font-size: 23px;
-          }
-        }
-
-        @media (max-width: 1024px) {
-          .guide-tooltip {
-            font-size: 21px;
-            padding: 20px 30px;
-            minWidth: '400px';
-            maxWidth: '700px';
-          }
-          .text-content {
-            font-size: 21px;
-          }
-          .guide-container {
-            left: 15vw !important;
-          }
-        }
-
-        @media (max-width: 768px) {
-          .guide-tooltip {
-            font-size: 20px;
-            padding: 20px 25px;
-            minWidth: '350px';
-            maxWidth: '600px';
-          }
-          .text-content {
-            font-size: 20px;
-          }
-          .guide-container {
-            left: 10vw !important;
-          }
-        }
-
-        @media (max-width: 926px) and (orientation: landscape) {
-          .guide-tooltip {
-            font-size: 18px;
-            padding: 15px 20px;
-            minWidth: '300px';
-            maxWidth: '500px';
-            minHeight: '80px';
-          }
-          .text-content {
-            font-size: 18px;
-          }
-          .guide-container {
-            top: 5vh !important;
-            left: 25vw !important;
-          }
-        }
-
-        @media (max-width: 428px) {
-          .guide-tooltip {
-            font-size: 16px;
-            padding: 15px 20px;
-            minWidth: '250px';
-            maxWidth: '85vw';
-          }
-          .text-content {
-            font-size: 16px;
-          }
-          .guide-container {
-            left: 5vw !important;
-            maxWidth: '90vw';
-          }
-        }
-
-        @media (max-width: 320px) {
-          .guide-tooltip {
-            font-size: 14px;
-            padding: 12px 16px;
-            minWidth: '200px';
-            maxWidth: '90vw';
-          }
-          .text-content {
-            font-size: 14px;
-          }
+        .menu-button:hover {
+          background-color: rgba(255, 215, 0, 0.2);
         }
 
         .nav-button {
@@ -321,72 +260,18 @@ const menuButtonText = {
           color: #666;
           font-size: 29px;
           cursor: pointer;
-          padding: 5px 15px;
+          padding: 0 5px;
+          margin-left: 10px;
           transition: all 0.3s ease;
         }
-        .nav-button:disabled {
-          opacity: 0.5;
-          cursor: not-allowed;
-        }
+
         .nav-button:hover:not(:disabled) {
           color: #000;
         }
-        :global(.qualy-title) {
-          font-family: 'Qualy', sans-serif;
-          font-weight: bold;
-        }
-        .menu-button {
-          background: #4CAF50;
-          color: white;
-          border: none;
-          padding: 10px 20px;
-          border-radius: 5px;
-          cursor: pointer;
-          font-size: 16px;
-          font-weight: bold;
-          transition: all 0.3s ease;
-        }
 
-        .menu-button:hover {
-          background: #45a049;
-          transform: scale(1.05);
-        }
-
-        :global(.language-selector) {
-          z-index: 1002 !important;
-        }
-
-        /* Ajustements en fonction de la hauteur de l'écran */
-        @media (max-height: 900px) {
-          .guide-container {
-            top: 7vh !important;
-          }
-        }
-
-        @media (max-height: 800px) {
-          .guide-container {
-            top: 5vh !important;
-          }
-        }
-
-        @media (max-height: 700px) {
-          .guide-container {
-            top: 3vh !important;
-          }
-        }
-
-        /* Pour les écrans très petits en hauteur (mode paysage sur mobile) */
-        @media (max-height: 500px) {
-          .guide-container {
-            top: 2vh !important;
-          }
-        }
-
-        /* Combiner avec les media queries existantes pour la largeur */
-        @media (max-width: 926px) and (orientation: landscape) {
-          .guide-container {
-            top: 2vh !important;
-          }
+        .nav-button:disabled {
+          opacity: 0.5;
+          cursor: not-allowed;
         }
       `}</style>
     </>
