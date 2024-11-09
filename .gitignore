@@ -36,7 +36,7 @@ yarn-error.log*
 next-env.d.ts
 
 #Temp Test
-/app/api/admin
+/app/api/analytics
 /app/services
 /app/types
 /app/firebaseAdmin.ts
