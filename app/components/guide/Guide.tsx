@@ -6,10 +6,12 @@ import React, { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { guideData, GuideStep } from "./guideData";
 import { useGuide } from "@/app/context/GuideContext";
-import { useRouter } from "next/navigation";
+import { useRouter, usePathname } from "next/navigation";
+import { ArrowRight } from 'lucide-react';
 
 const Guide: React.FC = () => {
   const router = useRouter();
+  const pathname = usePathname();
   const guide = useGuide();
   const [isTooltipVisible, setIsTooltipVisible] = useState(false);
   const [currentStepData, setCurrentStepData] = useState<GuideStep | null>(null);
@@ -18,6 +20,7 @@ const Guide: React.FC = () => {
   const tooltipRef = useRef<HTMLDivElement>(null);
   const textContentRef = useRef<HTMLDivElement>(null);
   const [tooltipWidth, setTooltipWidth] = useState<string>('auto');
+  const [shouldRender, setShouldRender] = useState(true);
 
 const menuButtonText = {
   fr: "Menu principal",
@@ -97,11 +100,21 @@ const menuButtonText = {
     }
   }, [message, isTooltipVisible]);
 
+  useEffect(() => {
+    const isUTCPage = ['/utc', '/utcFR', '/utcUK'].includes(pathname || '');
+    setShouldRender(!isUTCPage);
+  }, [pathname]);
+
+  // Vérification du rendu
+  if (!shouldRender) {
+    return null;
+  }
+
   return (
     <>
       <div className="guide-container" style={{ 
         position: 'fixed',
-        top: '5vh',
+        top: '7vh',
         left: '15vw',
         zIndex: 1000,
         display: 'flex',
@@ -152,7 +165,7 @@ const menuButtonText = {
                       disabled={guide.step >= guideData.length}
                       className="nav-button"
                     >
-                      →
+                      <ArrowRight className="size-8" />
                     </button>
                   )
                 )}
@@ -188,7 +201,7 @@ const menuButtonText = {
           padding: 15px 25px;
           border-radius: 4.5rem;
           box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-          min-width: 600px;
+          min-width: 700px;
           max-width: fit-content;
           z-index: 1001;
           display: flex;

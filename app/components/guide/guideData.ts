@@ -77,7 +77,7 @@ export const guideData: GuideStep[] = [
     },
     showMessage: false,
     menu: true,
-    timer: 5
+    timer: 3
   },
   {
     step: 8,
@@ -155,10 +155,11 @@ export const guideData: GuideStep[] = [
   {
     step: 16,
     messages: {
-      en: "Congratulations, you won 500 OXLT !",
-      fr: "Félicitation vous avez gagner 500 OXLT !"
+      en: "Congratulations, you won OXLT !",
+      fr: "Félicitation vous avez gagner des OXLT !"
     },
-    showMessage: true,
+    showMessage: false,
+    timer: 2,
     menu: true,
   },
   {

@@ -60,7 +60,22 @@ const FlappyBirdGame: React.FC = () => {
 
     if (hasCollision) {
       if (isBetMode) {
-        // Ajouter 1200 OXLT au solde actuel
+        // Si le score est 0, on relance directement la partie
+        if (gameState.state.score === 0) {
+          // Réinitialiser la position de l'oiseau
+          gameState.refs.birdYRef.current = BIRD_CONFIG.START_Y;
+          gameState.refs.birdSpeedRef.current = BIRD_CONFIG.THRUST;
+          gameState.refs.birdRotationRef.current = 0;
+          gameState.refs.pipesRef.current = [];
+          
+          // Relancer directement en mode PLAY
+          gameState.state.setGameState(GAME_STATES.PLAY);
+          sounds.sfxStartRef.current?.play();
+          sounds.sfxFlapRef.current?.play();
+          return false;
+        }
+        
+        // Si le score n'est pas 0, comportement normal
         const currentBalance = parseInt(localStorage.getItem("oxltBalance") || "0");
         const newBalance = currentBalance + 1200;
         localStorage.setItem("oxltBalance", newBalance.toString());
@@ -79,7 +94,7 @@ const FlappyBirdGame: React.FC = () => {
       }
     }
     return false;
-  }, [assets.groundImage, assets.pipeTopImage, gameState.refs.birdYRef, gameState.refs.pipesRef, gameState.state, isBetMode, incrementStep]);
+  }, [assets.groundImage, assets.pipeTopImage, gameState.refs.birdYRef, gameState.refs.pipesRef, gameState.state, isBetMode, incrementStep, sounds.sfxStartRef, sounds.sfxFlapRef]);
 
   // État pour le scoreboard avec le score du joueur
   const userPseudo = "You";
@@ -468,7 +483,7 @@ const FlappyBirdGame: React.FC = () => {
             className={`bg-[#4695c6] shadow-lg ml-4 mt-[-15px] relative`}
             style={{ width: CANVAS_WIDTH, height: CANVAS_HEIGHT }}
           >
-            {/* En-t��te avec le nombre d'OXLT */}
+            {/* En-tte avec le nombre d'OXLT */}
             <div className="relative bg-white p-3 flex justify-center items-center h-[50px]">
               <span className="text-[#4695c6] text-4xl py-2 quantico">
                 You have {displayBalance}
