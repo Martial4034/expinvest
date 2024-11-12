@@ -53,7 +53,7 @@ export const useOXLTBalance = () => {
         cancelAnimationFrame(animationRef.current);
       }
     };
-  }, []);
+  }, [displayBalance]);
 
   return displayBalance;
 }; 

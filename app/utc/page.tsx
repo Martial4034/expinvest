@@ -3,6 +3,7 @@
 import { useEffect, useRef } from 'react';
 import { useGuide } from "@/app/context/GuideContext";
 import styles from './Unity.module.css';
+import Image from 'next/image';
 
 interface UnityConfig {
   dataUrl: string;
@@ -113,10 +114,12 @@ export default function Page() {
   return (
     <div className="w-screen h-screen overflow-hidden">
       <div id="unity-loading-overlay" className={styles.loadingOverlay}>
-        <img 
+        <Image 
           src="/Guide/Stickers/OxO_3.png"
           alt="Loading..."
           className={styles.loadingLogo}
+          width={500}
+          height={300}
         />
         <div className={styles.progressBar}>
           <div className={styles.progressFill} id="unity-progress-bar-full"></div>

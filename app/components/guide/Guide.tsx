@@ -10,14 +10,14 @@ import { useRouter } from "next/navigation";
 
 const Guide: React.FC = () => {
   const router = useRouter();
-  const { step, incrementStep } = useGuide();
+  const guide = useGuide();
   const [isTooltipVisible, setIsTooltipVisible] = useState(false);
   const [currentStepData, setCurrentStepData] = useState<GuideStep | null>(null);
   const [pseudo, setPseudo] = useState<string>('');
   const [language, setLanguage] = useState<'fr' | 'en'>('fr');
   const tooltipRef = useRef<HTMLDivElement>(null);
   const textContentRef = useRef<HTMLDivElement>(null);
-  const [tooltipWidth, setTooltipWidth] = useState('50vw');
+  const [tooltipWidth, setTooltipWidth] = useState<string>('auto');
 
 const menuButtonText = {
   fr: "Menu principal",
@@ -37,9 +37,9 @@ const menuButtonText = {
   }, []);
   
   useEffect(() => {
-    let stepData = guideData.find(gs => gs.step === step);
+    let stepData = guideData.find(gs => gs.step === guide.step);
 
-    if (!stepData && step > guideData.length) {
+    if (!stepData && guide.step > guideData.length) {
       stepData = {
         step: 99999999999,
         messages: {
@@ -63,31 +63,13 @@ const menuButtonText = {
         return () => clearTimeout(timer);
       }
     }
-  }, [step]);
+  }, [guide.step]);
 
   // Message personnalisé avec le pseudo stylisé
   const message = currentStepData?.messages[language].replace(
     '{PSEUDO}',
     `<span>${pseudo || 'POTENTIEL INVESTISSEUR'}</span>`
   );
-
-  const tooltipStyles = {
-    marginLeft: '20px',
-    fontSize: '25.3px',
-    background: 'white',
-    padding: '15px 25px',
-    borderRadius: '4.5rem',
-    boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)',
-    minWidth: '700px',
-    maxWidth: '1200px',
-    width: 'auto',
-    whiteSpace: 'normal',
-    lineHeight: '1.4',
-    zIndex: 1001,
-    display: 'flex',
-    alignItems: 'center',
-    minHeight: '70px',
-  };
 
   const handleGuideClick = () => {
     if (!currentStepData?.showMessage) {
@@ -96,7 +78,7 @@ const menuButtonText = {
   };
 
   const handleMenuClick = async () => {
-    incrementStep();
+    guide.incrementStep();
     setTimeout(() => {
       router.push('/');
     }, 100);
@@ -149,6 +131,7 @@ const menuButtonText = {
               animate={{ opacity: 1, x: 0 }}
               exit={{ opacity: 0, x: -20 }}
               className="guide-tooltip"
+              style={{ width: tooltipWidth }}
             >
               <div className="tooltip-content">
                 <div 
@@ -165,8 +148,8 @@ const menuButtonText = {
                 ) : (
                   currentStepData?.showMessage && (
                     <button 
-                      onClick={() => incrementStep()}
-                      disabled={step >= guideData.length}
+                      onClick={() => guide.incrementStep()}
+                      disabled={guide.step >= guideData.length}
                       className="nav-button"
                     >
                       →
