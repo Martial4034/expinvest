@@ -21,7 +21,7 @@ export default function OxeltaPage() {
         <OxeltaTabs />
       </div>
       <div className="absolute bottom-0">
-        <OXLTBalanceDisplay isFlappyPage={false} />
+        <OXLTBalanceDisplay />
       </div>
     </div>
   );

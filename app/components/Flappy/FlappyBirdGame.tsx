@@ -468,7 +468,7 @@ const FlappyBirdGame: React.FC = () => {
             className={`bg-[#4695c6] shadow-lg ml-4 mt-[-15px] relative`}
             style={{ width: CANVAS_WIDTH, height: CANVAS_HEIGHT }}
           >
-            {/* En-tête avec le nombre d'OXLT */}
+            {/* En-t��te avec le nombre d'OXLT */}
             <div className="relative bg-white p-3 flex justify-center items-center h-[50px]">
               <span className="text-[#4695c6] text-4xl py-2 quantico">
                 You have {displayBalance}

@@ -1,12 +1,6 @@
 import React, { useEffect, useState, useRef } from 'react';
 
-interface OXLTBalanceDisplayProps {
-  isFlappyPage?: boolean;
-}
-
-export const OXLTBalanceDisplay: React.FC<OXLTBalanceDisplayProps> = ({ 
-  isFlappyPage = false 
-}) => {
+export const OXLTBalanceDisplay: React.FC = () => {
   const [displayBalance, setDisplayBalance] = useState<number>(0);
   const animationRef = useRef<number>();
   const targetBalanceRef = useRef<number>(0);
@@ -60,8 +54,7 @@ export const OXLTBalanceDisplay: React.FC<OXLTBalanceDisplayProps> = ({
         cancelAnimationFrame(animationRef.current);
       }
     };
-  }, []);
-
+  }, [displayBalance]);
 
   return (
     <div className={"flex items-center justify-center mb-5"}>

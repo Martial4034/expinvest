@@ -18,10 +18,10 @@ export const GameOverlay: React.FC<GameOverlayProps> = ({
   handlePari,
   showControls
 }) => {
+  const guide = useGuide();
   if (gameState.state.gameState !== GAME_STATES.GAME_OVER) {
     return null;
   }
-  const { step: guideStep } = useGuide();
   return (
     <>
       {showControls && (
@@ -40,7 +40,7 @@ export const GameOverlay: React.FC<GameOverlayProps> = ({
             </div>
 
             {/* Revive Button - only show if not used */}
-            {!gameState.state.reviveUsed && guideStep !== 13 && (
+            {!gameState.state.reviveUsed && guide.step !== 13 && (
               <button
                 onClick={(e) => {
                   e.stopPropagation();
@@ -54,7 +54,7 @@ export const GameOverlay: React.FC<GameOverlayProps> = ({
             )}
 
             {/* Play Again Button */}
-            {(guideStep !== 11 && guideStep !== 13) && (
+            {(guide.step !== 11 && guide.step !== 13) && (
               <button
                 onClick={(e) => {
                   e.stopPropagation();
@@ -68,7 +68,7 @@ export const GameOverlay: React.FC<GameOverlayProps> = ({
             )}
 
             {/* Pari Button */}
-            {(guideStep !== 11) && (
+            {(guide.step !== 11) && (
               <button
                 onClick={(e) => {
                   e.stopPropagation();

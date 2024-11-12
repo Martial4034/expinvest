@@ -14,6 +14,7 @@ export default function FlagSelection() {
   useEffect(() => {
     const languageSelected = localStorage.getItem("languageSelected");
     if (!languageSelected) {
+      setLanguage("en");
     } else {
       setLanguage(languageSelected);
     }
