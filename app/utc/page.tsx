@@ -2,6 +2,7 @@
 
 import { useEffect, useRef } from 'react';
 import { useGuide } from "@/app/context/GuideContext";
+import styles from './Unity.module.css';
 
 interface UnityConfig {
   dataUrl: string;
@@ -52,23 +53,40 @@ export default function Page() {
 
     if (!unityContainer) return;
 
+    const handleResize = () => {
+      if (unityContainer) {
+        unityContainer.width = window.innerWidth;
+        unityContainer.height = window.innerHeight;
+      }
+    };
+
+    handleResize();
+
+    window.addEventListener('resize', handleResize);
+
     const script = document.createElement('script');
-    script.src = '/Utc/Build/OXELTABuilds.loader.js';
+    script.src = '/Utc/Build/Build.loader.js';
     script.async = true;
     script.onload = () => {
       if (typeof createUnityInstance === 'function') {
         createUnityInstance(unityContainer, {
-          dataUrl: '/Utc/Build/OXELTABuilds.data.br',
-          frameworkUrl: '/Utc/Build/OXELTABuilds.framework.js.br',
-          codeUrl: '/Utc/Build/OXELTABuilds.wasm.br',
+          dataUrl: '/Utc/Build/Build.data.br',
+          frameworkUrl: '/Utc/Build/Build.framework.js.br',
+          codeUrl: '/Utc/Build/Build.wasm.br',
           streamingAssetsUrl: '/Utc/StreamingAssets',
           companyName: 'OXELTA',
           productName: 'OXELTA Game',
           productVersion: '1.0',
-          canvas: unityContainer, // Explicitly specify the canvas
+          canvas: unityContainer,
+          matchWebGLToCanvasSize: true,
+          devicePixelRatio: window.devicePixelRatio
         })
           .then((unityInstance: UnityInstance) => {
             console.log('Unity instance created:', unityInstance);
+            const loadingOverlay = document.getElementById('unity-loading-overlay');
+            if (loadingOverlay) {
+              loadingOverlay.style.display = 'none';
+            }
           })
           .catch((error: Error) => {
             console.error('Unity instance creation failed:', error);
@@ -85,6 +103,7 @@ export default function Page() {
     document.body.appendChild(script);
 
     return () => {
+      window.removeEventListener('resize', handleResize);
       if (script.parentNode) {
         script.parentNode.removeChild(script);
       }
@@ -92,12 +111,21 @@ export default function Page() {
   }, []);
 
   return (
-    <div className="flex justify-center items-center h-screen">
+    <div className="w-screen h-screen overflow-hidden">
+      <div id="unity-loading-overlay" className={styles.loadingOverlay}>
+        <img 
+          src="/Guide/Stickers/OxO_3.png"
+          alt="Loading..."
+          className={styles.loadingLogo}
+        />
+        <div className={styles.progressBar}>
+          <div className={styles.progressFill} id="unity-progress-bar-full"></div>
+        </div>
+      </div>
       <canvas
         id="unity-canvas"
         ref={unityContainerRef}
-        className="unity-container"
-        style={{ width: '960px', height: '600px' }}
+        className="w-full h-full"
       />
     </div>
   );

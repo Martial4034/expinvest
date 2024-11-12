@@ -1,8 +1,8 @@
 'use client'
 
 import "./globals.css";
-import { GuideProvider } from "@/app/context/GuideContext";
-import Guide from "@/app/components/guide/Guide";
+import { GuideProvider } from "../app/context/GuideContext";
+import Guide from "../app/components/guide/Guide";
 
 export default function RootLayout({
   children,

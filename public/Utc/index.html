@@ -52,12 +52,12 @@
       }
 
       var buildUrl = "Build";
-      var loaderUrl = buildUrl + "/OXELTABuilds.loader.js";
+      var loaderUrl = buildUrl + "/Build.loader.js";
       var config = {
         arguments: [],
-        dataUrl: buildUrl + "/OXELTABuilds.data.br",
-        frameworkUrl: buildUrl + "/OXELTABuilds.framework.js.br",
-        codeUrl: buildUrl + "/OXELTABuilds.wasm.br",
+        dataUrl: buildUrl + "/Build.data.br",
+        frameworkUrl: buildUrl + "/Build.framework.js.br",
+        codeUrl: buildUrl + "/Build.wasm.br",
         streamingAssetsUrl: "StreamingAssets",
         companyName: "UndertheClash",
         productName: "UTH",
@@ -93,7 +93,7 @@
         canvas.style.height = "600px";
       }
 
-      canvas.style.background = "url('" + buildUrl + "/OXELTABuilds.jpg') center / cover";
+      canvas.style.background = "url('" + buildUrl + "/Build.jpg') center / cover";
       document.querySelector("#unity-loading-bar").style.display = "block";
 
       var script = document.createElement("script");

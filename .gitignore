@@ -40,3 +40,8 @@ next-env.d.ts
 /app/services
 /app/types
 /app/firebaseAdmin.ts
+/app/types/recording.ts
+/app/admin/
+/app/admin/sessions/
+/app/admin/sessions/page.tsx
+/app/firebaseAdmin.ts
