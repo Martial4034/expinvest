@@ -1,5 +1,5 @@
 // components/OxeltaInfo.tsx
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { InvestmentDialog } from "./InvestmentDialog";
 import { Card } from "@/app/components/ui/card";
 import { motion, AnimatePresence } from 'framer-motion';
@@ -9,6 +9,7 @@ import { Slider as MUISlider } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import { Input } from "@/app/components/ui/input";
 import { z } from "zod";
+import { Loader2 } from "lucide-react";
 
 // Validation schema pour l'email
 const emailSchema = z.string().email("Format d'email invalide");
@@ -79,10 +80,63 @@ const OxeltaInfo: React.FC = () => {
     amount: 20000,
     email: ''
   });
+  const [isLoading, setIsLoading] = useState(false);
 
-  const handleNextStep = () => {
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const storedStep = localStorage.getItem('currentStep');
+      const storedType = localStorage.getItem('type');
+      const storedAmount = localStorage.getItem('amoutToken');
+      const storedEmail = localStorage.getItem('EMAIL');
+
+      if (storedStep) setCurrentStep(Number(storedStep));
+      if (storedType) setInvestment(prev => ({ ...prev, type: storedType as 'USDT' | 'USD' }));
+      if (storedAmount) setInvestment(prev => ({ ...prev, amount: Number(storedAmount) }));
+      if (storedEmail) setInvestment(prev => ({ ...prev, email: storedEmail }));
+    }
+  }, []);
+
+  const handleNextStep = async () => {
     if (currentStep < 4) {
-      setCurrentStep(currentStep + 1);
+      if (currentStep === 1 && investment.type) {
+        localStorage.setItem('type', investment.type);
+      }
+      if (currentStep === 2) {
+        localStorage.setItem('amoutToken', investment.amount.toString());
+      }
+      if (currentStep === 3 && validateEmail(investment.email)) {
+        setIsLoading(true);
+        localStorage.setItem('EMAIL', investment.email);
+        try {
+          const response = await fetch('/api/sendEmail', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+              pseudo: localStorage.getItem('PSEUDO') || 'Anonymous',
+              email: investment.email,
+              amount: investment.amount,
+              type: investment.type,
+            }),
+          });
+
+          if (!response.ok) {
+            throw new Error('Erreur lors de l\'envoi de l\'email');
+          }
+          
+          const nextStep = currentStep + 1;
+          setCurrentStep(nextStep);
+          localStorage.setItem('currentStep', nextStep.toString());
+        } catch (error) {
+          console.error('Erreur:', error);
+          // Gérer l'erreur ici (par exemple, afficher un message à l'utilisateur)
+        }
+      }
+
+      const nextStep = currentStep + 1;
+      setCurrentStep(nextStep);
+      localStorage.setItem('currentStep', nextStep.toString());
     }
   };
 
@@ -182,7 +236,7 @@ const OxeltaInfo: React.FC = () => {
             exit="exit"
             className="relative flex flex-col h-full"
           >
-            <div className="flex flex-col items-center justify-center h-full">
+            <div className="flex flex-col min-h-[350px] items-center justify-center h-full">
               <h2 className="text-center text-3xl text-[#00FFFB] mb-12 quantico-title">
                 Comment souhaitez-vous investir ?
               </h2>
@@ -190,15 +244,17 @@ const OxeltaInfo: React.FC = () => {
                 {['USDT', 'USD'].map((type) => (
                   <div
                     key={type}
-                    onClick={() => setInvestment({ ...investment, type: type as 'USDT' | 'USD' })}
+                    onClick={() => {
+                      setInvestment({ ...investment, type: type as 'USDT' | 'USD' });
+                    }}
                     className={cn(
-                      "flex flex-col items-center p-8 rounded-xl cursor-pointer transition-all",
+                      "flex flex-col items-center p-8 rounded-xl border-2 border-[#1968b0] cursor-pointer transition-all",
                       "hover:bg-[#143956]",
-                      investment.type === type ? "bg-[#143956] border-2 border-[#00FFFB]" : "bg-[#0A1E35]"
+                      investment.type === type ? "bg-[#143956] border-2 border-[#00FFFB]" : ""
                     )}
                   >
                     <Image
-                      src={`/Investment/${type}.png`}
+                      src={`/Invest/${type}.png`}
                       alt={type}
                       width={120}
                       height={120}
@@ -223,7 +279,7 @@ const OxeltaInfo: React.FC = () => {
             exit="exit"
             className="relative flex flex-col h-full"
           >
-            <div className="flex flex-col items-center justify-center h-full space-y-12">
+            <div className="flex flex-col min-h-[350px] items-center justify-center h-full space-y-12">
               <h2 className="text-center text-3xl text-[#00FFFB] mb-8 quantico-title">
                 Combien souhaitez-vous investir ?
               </h2>
@@ -256,7 +312,7 @@ const OxeltaInfo: React.FC = () => {
                       const value = Number(e.target.value);
                       setInvestment({ ...investment, amount: value });
                     }}
-                    className="w-32 bg-transparent text-3xl text-[#00FFFB] quantico-title text-center focus:outline-none border-none"
+                    className="w-40 bg-transparent text-3xl text-[#00FFFB] quantico-title text-center focus:outline-none border-none"
                   />
                   <span className="text-3xl text-[#00FFFB] quantico-title ml-2">$</span>
                 </div>
@@ -281,21 +337,20 @@ const OxeltaInfo: React.FC = () => {
             exit="exit"
             className="relative flex flex-col h-full"
           >
-            <div className="flex flex-col items-center justify-center h-full space-y-8">
-              <h2 className="text-center text-3xl text-[#00FFFB] mb-8 quantico-title">
+            <div className="flex flex-col items-center justify-center min-h-[350px] h-full space-y-8">
+              <h2 className="text-center mt-[-6rem] text-3xl text-[#00FFFB] mb-8 quantico-title">
                 Indiquez nous votre email
               </h2>
               <div className="flex flex-col items-center space-y-4 w-full max-w-lg">
                 <Input
                   type="email"
-                  placeholder="votre@email.com"
+                  placeholder="my@email.com"
                   value={investment.email}
-                  onChange={(e) => setInvestment({ ...investment, email: e.target.value })}
+                  onChange={(e) => {
+                    setInvestment({ ...investment, email: e.target.value });
+                  }}
                   className="w-full px-4 py-3 bg-[#143956] border-2 border-[#00FFFB] text-white text-lg placeholder:text-gray-400"
                 />
-                {investment.email && !validateEmail(investment.email) && (
-                  <span className="text-red-500">Email invalide</span>
-                )}
               </div>
             </div>
             {renderButtons()}
