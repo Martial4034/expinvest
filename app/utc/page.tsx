@@ -1,10 +1,11 @@
 'use client';
 
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState, useCallback } from 'react';
 import { useGuide } from "@/app/context/GuideContext";
 import styles from './Unity.module.css';
 import Image from 'next/image';
 import { Progress } from "@/app/components/ui/progress"
+import { loadingPhrases, LoadingPhrase } from './LoadingPhrases';
 
 interface UnityConfig {
   dataUrl: string;
@@ -52,6 +53,31 @@ export default function Page() {
   const progressTimeout = useRef<NodeJS.Timeout>();
   const [isAnimating, setIsAnimating] = useState(false);
   const imageRef = useRef<HTMLDivElement>(null);
+  const [buildPath, setBuildPath] = useState('/Utc/en/');
+  const [buildSettings, setBuildSettings] = useState('BuildEN');
+  const [currentPhrase, setCurrentPhrase] = useState<LoadingPhrase>(loadingPhrases[0]);
+  const phraseInterval = useRef<NodeJS.Timeout>();
+  const [language, setLanguage] = useState<string>('en');
+  const [isMounted, setIsMounted] = useState(false);
+
+  useEffect(() => {
+    setIsMounted(true);
+    const storedLanguage = localStorage.getItem('languageSelected');
+    setLanguage(storedLanguage === 'fr' ? 'fr' : 'en');
+  }, []);
+
+  useEffect(() => {
+    if (!isMounted) return;
+    
+    const storedLanguage = language;
+    if (storedLanguage === 'fr') {
+      setBuildPath('/Utc/fr/');
+      setBuildSettings('BuildFR');
+    } else {
+      setBuildPath('/Utc/en/');
+      setBuildSettings('BuildEN');
+    }
+  }, [isMounted, language]);
 
   const simulateDynamicLoading = () => {
     const loadingSteps = [
@@ -123,20 +149,19 @@ export default function Page() {
     handleResize();
     window.addEventListener('resize', handleResize);
 
-    // Démarrer la simulation de chargement
     simulateDynamicLoading();
 
     const script = document.createElement('script');
-    script.src = '/Utc/Build/Build.loader.js';
+    script.src = `${buildPath}Build/${buildSettings}.loader.js`;
     script.async = true;
 
     script.onload = () => {
       if (typeof createUnityInstance === 'function') {
         createUnityInstance(unityContainer, {
-          dataUrl: '/Utc/Build/Build.data.br',
-          frameworkUrl: '/Utc/Build/Build.framework.js.br',
-          codeUrl: '/Utc/Build/Build.wasm.br',
-          streamingAssetsUrl: '/Utc/StreamingAssets',
+          dataUrl: `${buildPath}Build/${buildSettings}.data.br`,
+          frameworkUrl: `${buildPath}Build/${buildSettings}.framework.js.br`,
+          codeUrl: `${buildPath}Build/${buildSettings}.wasm.br`,
+          streamingAssetsUrl: `${buildPath}StreamingAssets`,
           companyName: 'OXELTA',
           productName: 'OXELTA Game',
           productVersion: '1.0',
@@ -167,7 +192,7 @@ export default function Page() {
         clearTimeout(progressTimeout.current);
       }
     };
-  }, []);
+  }, [buildPath]);
 
   const handleClick = (event: React.MouseEvent<HTMLDivElement>) => {
     // Animation de l'image
@@ -192,6 +217,25 @@ export default function Page() {
       }, 600);
     }
   };
+
+  const updateLoadingPhrase = useCallback(() => {
+    setCurrentPhrase(prev => {
+      const currentIndex = loadingPhrases.findIndex(phrase => phrase === prev);
+      const nextIndex = (currentIndex + 1) % loadingPhrases.length;
+      return loadingPhrases[nextIndex];
+    });
+  }, []);
+
+  useEffect(() => {
+    // Changement de phrase toutes les 4 secondes
+    phraseInterval.current = setInterval(updateLoadingPhrase, 4000);
+
+    return () => {
+      if (phraseInterval.current) {
+        clearInterval(phraseInterval.current);
+      }
+    };
+  }, [updateLoadingPhrase]);
 
   return (
     <div className="w-screen h-screen overflow-hidden">
@@ -220,6 +264,13 @@ export default function Page() {
           </div>
           <div className="mt-2 text-white text-sm">
             {Math.round(progress)}%
+          </div>
+          <div className="mt-4 text-white text-xl pp-telegraf-bold max-w-[500px] text-center animate-fade-in">
+            {isMounted && (
+              language === 'fr' 
+                ? currentPhrase.fr 
+                : currentPhrase.en
+            )}
           </div>
         </div>
       </div>
