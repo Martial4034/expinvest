@@ -158,9 +158,9 @@ export default function Page() {
     script.onload = () => {
       if (typeof createUnityInstance === 'function') {
         createUnityInstance(unityContainer, {
-          dataUrl: `${buildPath}Build/${buildSettings}.data.br`,
-          frameworkUrl: `${buildPath}Build/${buildSettings}.framework.js.br`,
-          codeUrl: `${buildPath}Build/${buildSettings}.wasm.br`,
+          dataUrl: `${buildPath}Build/${buildSettings}.data`,
+          frameworkUrl: `${buildPath}Build/${buildSettings}.framework.js`,
+          codeUrl: `${buildPath}Build/${buildSettings}.wasm`,
           streamingAssetsUrl: `${buildPath}StreamingAssets`,
           companyName: 'OXELTA',
           productName: 'OXELTA Game',
