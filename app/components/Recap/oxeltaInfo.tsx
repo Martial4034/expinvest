@@ -142,7 +142,7 @@ const OxeltaInfo: React.FC = () => {
               <p className="text-2xl text-white text-center flex-1">
                 En achetant des tokens, vous créez{" "}
                 <span className="font-bold">une pression acheteuse</span> sur le marché,
-                car l'achat est directement lié à celui-ci.
+                car l&apos;achat est directement lié à celui-ci.
               </p>
             </div>
 
@@ -154,9 +154,9 @@ const OxeltaInfo: React.FC = () => {
               />
               <p className="text-2xl text-white text-center flex-1">
                 En les utilisant dans nos jeux, vous avez{" "}
-                <span className="font-bold">réduit l'offre en circulation</span> et
+                <span className="font-bold">réduit l&apos;offre en circulation</span> et
                 contribué à constituer un{" "}
-                <span className="font-bold">stock d'OXLT</span> pour Oxelta, destiné
+                <span className="font-bold">stock d&apos;OXLT</span> pour Oxelta, destiné
                 à être revendu dans nos jeux pour générer des revenus.
               </p>
             </div>

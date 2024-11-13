@@ -14,7 +14,7 @@ export interface LoadingPhrase {
   
   export const loadingPhrases: LoadingPhrase[] = [
     {
-      fr: "Les fantômes font la ronde autour de la réserve d’or.",
+      fr: "Les fantômes font la ronde autour de la réserve d'or.",
       en: "Ghosts are patrolling around the gold reserve."
     },
     {
@@ -62,7 +62,7 @@ export interface LoadingPhrase {
       en: "Golems are honing their juggling skills."
     },
     {
-      fr: "Les fantômes organisent une fête de l’or.",
+      fr: "Les fantômes organisent une fête de l'or.",
       en: "Ghosts are throwing a gold party."
     },
     {
@@ -70,7 +70,7 @@ export interface LoadingPhrase {
       en: "Zombies are trying to cook a feast."
     },
     {
-      fr: "Les gorgouilles construisent un toboggan d’éther.",
+      fr: "Les gorgouilles construisent un toboggan d'éther.",
       en: "Gorgouilles are building an ether slide."
     },
     {
@@ -82,7 +82,7 @@ export interface LoadingPhrase {
       en: "Ghosts are writing poems about the bastion."
     },
     {
-      fr: "Les zombies jouent à la balle avec des barils d’or.",
+      fr: "Les zombies jouent à la balle avec des barils d'or.",
       en: "Zombies are playing ball with gold barrels."
     },
     {
@@ -94,11 +94,11 @@ export interface LoadingPhrase {
       en: "Golems are repairing walls while dancing."
     },
     {
-      fr: "Les fantômes tricotent des écharpes d’éther.",
+      fr: "Les fantômes tricotent des écharpes d'éther.",
       en: "Ghosts are knitting ether scarves."
     },
     {
-      fr: "Les zombies décorent la mine d’or avec des lumières.",
+      fr: "Les zombies décorent la mine d'or avec des lumières.",
       en: "Zombies are decorating the gold mine with lights."
     },
     {
@@ -106,7 +106,7 @@ export interface LoadingPhrase {
       en: "Gorgouilles are organizing a fashion show."
     },
     {
-      fr: "Les golems sculptent des statues d’or.",
+      fr: "Les golems sculptent des statues d'or.",
       en: "Golems are sculpting gold statues."
     },
     {
@@ -118,7 +118,7 @@ export interface LoadingPhrase {
       en: "Zombies are singing war songs."
     },
     {
-      fr: "Les gorgouilles préparent des potions d’éther.",
+      fr: "Les gorgouilles préparent des potions d'éther.",
       en: "Gorgouilles are brewing ether potions."
     },
     {
@@ -130,7 +130,7 @@ export interface LoadingPhrase {
       en: "Ghosts are hosting a masquerade ball."
     },
     {
-      fr: "Les zombies construisent un labyrinthe d’or.",
+      fr: "Les zombies construisent un labyrinthe d'or.",
       en: "Zombies are building a gold maze."
     }
   ];
