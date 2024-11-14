@@ -19,7 +19,6 @@ interface UnityConfig {
   matchWebGLToCanvasSize?: boolean | number;
   devicePixelRatio?: number;
   canvas?: HTMLCanvasElement;
-  onProgress?: (progress: number) => void;
 }
 
 interface UnityInstance {
@@ -30,25 +29,18 @@ interface UnityInstance {
     parameter?: string | number | boolean
   ): void;
   SetFullscreen(fullscreen: boolean): void;
-  // Add other methods and properties if needed
 }
 
 declare global {
   function createUnityInstance(
-    canvas: HTMLCanvasElement,
+    canvas: HTMLElement,
     config: UnityConfig
   ): Promise<UnityInstance>;
 }
 
-interface LoadingFile {
-  url: string;
-  size: number;
-  loaded: number;
-}
-
 export default function Page() {
   const { incrementStep } = useGuide();
-  const unityContainerRef = useRef<HTMLCanvasElement>(null);
+  const unityContainerRef = useRef<HTMLDivElement>(null);
   const [progress, setProgress] = useState(0);
   const progressTimeout = useRef<NodeJS.Timeout>();
   const [isAnimating, setIsAnimating] = useState(false);
@@ -141,8 +133,8 @@ export default function Page() {
 
     const handleResize = () => {
       if (unityContainer) {
-        unityContainer.width = window.innerWidth;
-        unityContainer.height = window.innerHeight;
+        unityContainer.style.width = `${window.innerWidth}px`;
+        unityContainer.style.height = `${window.innerHeight}px`;
       }
     };
 
@@ -158,14 +150,13 @@ export default function Page() {
     script.onload = () => {
       if (typeof createUnityInstance === 'function') {
         createUnityInstance(unityContainer, {
-          dataUrl: `${buildPath}Build/${buildSettings}.data`,
-          frameworkUrl: `${buildPath}Build/${buildSettings}.framework.js`,
-          codeUrl: `${buildPath}Build/${buildSettings}.wasm`,
+          dataUrl: `${buildPath}Build/${buildSettings}.data.br`,
+          frameworkUrl: `${buildPath}Build/${buildSettings}.framework.js.br`,
+          codeUrl: `${buildPath}Build/${buildSettings}.wasm.br`,
           streamingAssetsUrl: `${buildPath}StreamingAssets`,
           companyName: 'OXELTA',
           productName: 'OXELTA Game',
           productVersion: '1.0',
-          canvas: unityContainer,
           matchWebGLToCanvasSize: true,
           devicePixelRatio: window.devicePixelRatio,
         })
@@ -184,6 +175,10 @@ export default function Page() {
       }
     };
 
+    script.onerror = () => {
+      console.error('Failed to load Unity loader script');
+    };
+
     document.body.appendChild(script);
 
     return () => {
@@ -191,8 +186,11 @@ export default function Page() {
       if (progressTimeout.current) {
         clearTimeout(progressTimeout.current);
       }
+      if (script.parentNode) {
+        script.parentNode.removeChild(script);
+      }
     };
-  }, [buildPath]);
+  }, [buildPath, buildSettings]);
 
   const handleClick = (event: React.MouseEvent<HTMLDivElement>) => {
     // Animation de l'image
@@ -274,10 +272,9 @@ export default function Page() {
           </div>
         </div>
       </div>
-      <canvas
-        id="unity-canvas"
+      <div
         ref={unityContainerRef}
-        className="w-full h-full pointer-events-none"
+        className="unity-container w-full h-full"
       />
     </div>
   );
