@@ -19,11 +19,13 @@ import {
 } from './constants';
 import type { GameState } from './types';
 import Image from 'next/image';
+import { useTranslation } from "@/app/hooks/useTranslation";
 
 const FlappyBirdGame: React.FC = () => {
   const { assets, sounds } = useGameAssets();
   const gameState = useGameState();
   const { incrementStep } = useGuide();
+  const { t } = useTranslation();
     
   // Déplacer les déclarations d'état au début
   const [isBetMode, setIsBetMode] = useState(false);
@@ -418,8 +420,8 @@ const FlappyBirdGame: React.FC = () => {
         {/* Overlays sur le canvas */}
         {gameState.state.gameState === GAME_STATES.WAITING_BET && !isSearching && countdown === null && (
           <div className="absolute inset-0 bg-black bg-opacity-50 flex flex-col items-center justify-start pt-20">
-            <h2 className="text-white text-2xl mb-4">En attente de votre pari</h2>
-            <p className="text-white text-xl mb-8">Veuillez parier sur le tableau à droite</p>
+            <h2 className="text-white text-2xl mb-4">{t('flappyGame', 'waitingBet')}</h2>
+            <p className="text-white text-xl mb-8">{t('flappyGame', 'pleasebet')}</p>
             <Image
               src="/Tabs/Token.gif"
               alt="Loading"
@@ -432,22 +434,22 @@ const FlappyBirdGame: React.FC = () => {
 
         {gameState.state.gameState === GAME_STATES.SPECIAL_WIN && (
           <div className="absolute inset-0 bg-black bg-opacity-50 flex flex-col items-center justify-center">
-            <h2 className="text-white text-4xl mb-4">Congratulations</h2>
-            <p className="text-white text-2xl mb-8">You win</p>
+            <h2 className="text-white text-4xl mb-4">{t('flappyGame', 'congratulations')}</h2>
+            <p className="text-white text-2xl mb-8">{t('flappyGame', 'youWin')}</p>
             <p className="text-white text-3xl mb-8">1200 OXLT</p>
             <button
               onClick={handleNext}
               className="bg-blue-500 text-white px-8 py-3 rounded-lg font-bold hover:bg-blue-600 transition-all"
             >
-              Next
+              {t('flappyGame', 'next')}
             </button>
           </div>
         )}
 
         {isSearching && (
           <div className="absolute inset-0 bg-black bg-opacity-50 flex flex-col items-center justify-start pt-20">
-            <h2 className="text-white text-2xl mb-4">Recherche d&apos;un joueur</h2>
-            <p className="text-white text-xl mb-8">{searchStep} / 2</p>
+            <h2 className="text-white text-2xl mb-4">{t('flappyGame', 'searchingPlayer')}</h2>
+            <p className="text-white text-xl mb-8">{t('flappyGame', 'step')} {searchStep} / 2</p>
             <Image
               src="/Tabs/Token.gif"
               alt="Loading"
@@ -460,7 +462,7 @@ const FlappyBirdGame: React.FC = () => {
 
         {countdown !== null && (
           <div className="absolute inset-0 bg-black bg-opacity-50 flex flex-col items-center justify-start pt-20">
-            <h2 className="text-white text-2xl mb-8">Début de la partie dans</h2>
+            <h2 className="text-white text-2xl mb-8">{t('flappyGame', 'gameStartsIn')}</h2>
             <span className="text-white text-6xl">{countdown}</span>
           </div>
         )}
@@ -486,7 +488,7 @@ const FlappyBirdGame: React.FC = () => {
             {/* En-tte avec le nombre d'OXLT */}
             <div className="relative bg-white p-3 flex justify-center items-center h-[50px]">
               <span className="text-[#4695c6] text-4xl py-2 quantico">
-                You have {displayBalance}
+                {t('common', 'youHave')} {displayBalance}
               </span>
             </div>
 
@@ -504,7 +506,7 @@ const FlappyBirdGame: React.FC = () => {
             {/* Section Pari */}
             <div className="bg-[#4695c6] h-[calc(100%-80px)] flex flex-col items-center justify-center">
               <h2 className="text-white text-4xl quantico-title text-center justify-center mb-8">
-                Combien voulez vous parier ?
+                {t('flappyGame', 'howMuchBet')}
               </h2>
               
               <div className="flex items-center justify-center mb-12">
@@ -515,7 +517,7 @@ const FlappyBirdGame: React.FC = () => {
                 onClick={handleBetClick}
                 className="bg-white text-[#4695c6] px-12 py-4 text-2xl font-bold rounded-lg border-2 border-white hover:bg-transparent hover:text-white transition-all quantico"
               >
-                PARIER
+                {t('flappyGame', 'bet')}
               </button>
             </div>
           </div>

@@ -10,7 +10,7 @@ export async function POST(req: NextRequest) {
   try {
     const { data, error } = await resend.emails.send({
       from: 'Oxelta <contact@oxelta.io>',
-      to: ['contact@oxelta.io', 't.galante@gmail.com'],
+      to: ['contact@oxelta.io', 't.galante@oxelta.io'],
       subject: "Nouvelle demande d'investissement",
       react: EmailTemplateInvestment({ 
         pseudo,

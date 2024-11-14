@@ -10,6 +10,7 @@ import { styled } from "@mui/material/styles";
 import { Input } from "@/app/components/ui/input";
 import { z } from "zod";
 import { Loader2 } from "lucide-react";
+import { useTranslation } from "@/app/hooks/useTranslation";
 
 // Validation schema pour l'email
 const emailSchema = z.string().email("Format d'email invalide");
@@ -69,6 +70,7 @@ const slideVariants = {
 };
 
 const OxeltaInfo: React.FC = () => {
+  const { t } = useTranslation();
   const [dialogOpen, setDialogOpen] = useState(false);
   const [currentStep, setCurrentStep] = useState(0);
   const [investment, setInvestment] = useState<{
@@ -153,7 +155,7 @@ const OxeltaInfo: React.FC = () => {
             onClick={() => setCurrentStep(prev => prev - 1)}
             className="ml-2 px-2 py-2 text-white bg-[#1968b0] text-xl quantico-title rounded-full hover:bg-yellow-500/20 transition-colors"
           >
-            Previous
+            {t('common', 'previous')}
           </button>
         )}
         {currentStep < 4 && (
@@ -170,7 +172,7 @@ const OxeltaInfo: React.FC = () => {
               currentStep === 0 && "mx-auto"
             )}
           >
-            {currentStep === 3 ? 'Finish' : 'Next'}
+            {currentStep === 3 ? t('common', 'finish') : t('common', 'next')}
           </button>
         )}
       </div>
@@ -194,9 +196,7 @@ const OxeltaInfo: React.FC = () => {
                 className="w-40 h-40"
               />
               <p className="text-2xl text-white text-center flex-1">
-                En achetant des tokens, vous créez{" "}
-                <span className="font-bold">une pression acheteuse</span> sur le marché,
-                car l&apos;achat est directement lié à celui-ci.
+                {t('recap', 'buyingPressure')}
               </p>
             </div>
 
@@ -207,11 +207,7 @@ const OxeltaInfo: React.FC = () => {
                 className="w-36 h-36"
               />
               <p className="text-2xl text-white text-center flex-1">
-                En les utilisant dans nos jeux, vous avez{" "}
-                <span className="font-bold">réduit l&apos;offre en circulation</span> et
-                contribué à constituer un{" "}
-                <span className="font-bold">stock d&apos;OXLT</span> pour Oxelta, destiné
-                à être revendu dans nos jeux pour générer des revenus.
+                {t('recap', 'gameUsage')}
               </p>
             </div>
 
@@ -220,7 +216,7 @@ const OxeltaInfo: React.FC = () => {
                 onClick={() => setCurrentStep(1)}
                 className="px-12 py-4 text-white bg-[#1968b0] text-2xl quantico-title rounded-full border-4 border-yellow-400 hover:bg-yellow-500/20 transition-colors"
               >
-                Rejoindre la vente privée
+                {t('recap', 'joinPrivateSale')}
               </button>
             </div>
           </motion.div>
@@ -238,7 +234,7 @@ const OxeltaInfo: React.FC = () => {
           >
             <div className="flex flex-col min-h-[350px] items-center justify-center h-full">
               <h2 className="text-center text-3xl text-[#00FFFB] mb-12 quantico-title">
-                Comment souhaitez-vous investir ?
+                {t('recap', 'investmentMethod')}
               </h2>
               <div className="flex justify-center gap-12">
                 {['USDT', 'USD'].map((type) => (
@@ -281,7 +277,7 @@ const OxeltaInfo: React.FC = () => {
           >
             <div className="flex flex-col min-h-[350px] items-center justify-center h-full space-y-12">
               <h2 className="text-center text-3xl text-[#00FFFB] mb-8 quantico-title">
-                Combien souhaitez-vous investir ?
+                {t('recap', 'investmentAmount')}
               </h2>
               <div className="w-full flex justify-center">
                 <CustomSlider
@@ -318,7 +314,7 @@ const OxeltaInfo: React.FC = () => {
                 </div>
                 {(investment.amount < 800 || investment.amount > 40000) && (
                   <span className="text-red-500 text-sm">
-                    La valeur doit être comprise entre 800$ et 40000$
+                    {t('recap', 'amountError')}
                   </span>
                 )}
               </div>
@@ -339,7 +335,7 @@ const OxeltaInfo: React.FC = () => {
           >
             <div className="flex flex-col items-center justify-center min-h-[350px] h-full space-y-8">
               <h2 className="text-center mt-[-6rem] text-3xl text-[#00FFFB] mb-8 quantico-title">
-                Indiquez nous votre email
+                {t('recap', 'enterEmail')}
               </h2>
               <div className="flex flex-col items-center space-y-4 w-full max-w-lg">
                 <Input
@@ -369,10 +365,10 @@ const OxeltaInfo: React.FC = () => {
           >
             <div className="flex-1 flex flex-col items-center justify-center space-y-8">
               <h2 className="text-center text-3xl text-[#00FFFB] mb-8 quantico-title">
-                Merci pour votre intérêt !
+                {t('recap', 'thankYou')}
               </h2>
               <p className="text-xl text-white text-center">
-                Notre équipe vous contactera prochainement.
+                {t('recap', 'teamContact')}
               </p>
               <Image
                 src="/Guide/Stickers/Cheers.png"
@@ -394,7 +390,7 @@ const OxeltaInfo: React.FC = () => {
     <div className="w-[100vw] md:w-[70%] md:h-auto -ml-[env(safe-area-inset-left)] md:ml-0 min-w-[75vw] mobile-landscape:w-screen mobile-landscape:h-screen">
       {currentStep === 0 && (
         <h1 className="text-3xl md:text-3xl quantico-title text-center mb-5 text-white">
-          Dans cette simulation vous avez augmentez la valeur marchande du token OXLT
+          {t('recap', 'title')}
         </h1>
       )}
       <Card className="w-full h-full bg-[#1968b0] rounded-none md:rounded-[5rem] mobile-landscape:rounded-none border-0">

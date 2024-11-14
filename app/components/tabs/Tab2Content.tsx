@@ -1,8 +1,11 @@
 "use client";
 
+import { useTranslation } from "@/app/hooks/useTranslation";
 import Image from "next/image";
 
 export default function Tab2Content() {
+  const { t } = useTranslation();
+
   return (
     <div className="h-full w-full flex items-center pt-10 px-16 md:px-16">
       <div className="flex items-center justify-between w-full">
@@ -18,13 +21,12 @@ export default function Tab2Content() {
 
         <div className="w-2/3 flex flex-col items-center space-y-8">
           <p className="text-lg md:text-2xl pp-telegraf-bold text-white text-center max-w-xl">
-            NFT interopérable d&apos;Oxelta, offrant accès à des événements privés,
-            avantages dans nos jeux et aucune publicité.{" "}
+            {t('tab2', 'nftDescription')}
           </p>
           <div className="w-full max-w-md">
             <div className="bg-transparent rounded-full border-4 border-yellow-400 px-6 py-3 flex items-center justify-center">
               <span className="font-bold text-xl md:text-2xl pp-telegraf-bold text-white">
-                Coming Soon
+                {t('common', 'comingSoon')}
               </span>
             </div>
           </div>

@@ -3,6 +3,7 @@ import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
 import { CANVAS_WIDTH, CANVAS_HEIGHT } from "./constants";
 import { useOXLTBalance } from '@/app/components/Flappy/hooks/useOXLTBalance';
+import { useTranslation } from "@/app/hooks/useTranslation";
 
 interface ScoreboardProps {
   scoreboardData: Array<{ pseudo: string; score: number }>;
@@ -15,6 +16,7 @@ export const Scoreboard: React.FC<ScoreboardProps> = ({
 }) => {
   const topFiveScores = scoreboardData.slice(0, 5);
   const displayBalance = useOXLTBalance();
+  const { t } = useTranslation();
 
   return (
     <div
@@ -24,7 +26,7 @@ export const Scoreboard: React.FC<ScoreboardProps> = ({
       {/* En-tête avec le nombre d'OXLT */}
       <div className="relative bg-white p-3 flex justify-center items-center h-[50px]">
         <span className="text-[#4695c6] text-4xl py-2 quantico">
-          You have {displayBalance}
+          {t('common', 'youHave')} {displayBalance}
         </span>
       </div>
 
@@ -42,13 +44,17 @@ export const Scoreboard: React.FC<ScoreboardProps> = ({
       {/* Section Top Classement */}
       <div className="bg-[#4695c6] h-[calc(100%-80px)]">
         <div className="text-center py-4 quantico">
-          <h2 className="text-white text-4xl quantico-title mb-2">Top Classement</h2>
-          <p className="text-white text-2xl mb-6">Fin de classement 4 jours</p>
+          <h2 className="text-white text-4xl quantico-title mb-2">
+            {t('scoreboard', 'title')}
+          </h2>
+          <p className="text-white text-2xl mb-6">
+            {t('scoreboard', 'endIn')} 4 {t('common', 'days')}
+          </p>
 
           {/* Récompenses */}
           <div className="text-white text-2xl space-y-2 mb-2">
-            <p>1er 1,000,000 OXLT</p>
-            <p>2e 500,000 OXLT</p>
+            <p>{t('scoreboard', 'rewards.first', true)}</p>
+            <p>{t('scoreboard', 'rewards.second', true)}</p>
           </div>
         </div>
 
@@ -57,13 +63,13 @@ export const Scoreboard: React.FC<ScoreboardProps> = ({
           {/* En-tête du tableau */}
           <div className="flex bg-white text-black">
             <div className="flex-1 py-3 text-xl font-bold">
-              <span className="pl-2">Position</span>
+              <span className="pl-2">{t('common', 'position')}</span>
             </div>
             <div className="flex-1 py-3 text-xl font-bold text-center">
-              <span>Pseudo</span>
+              <span>{t('common', 'pseudo')}</span>
             </div>
             <div className="flex-1 py-3 text-xl font-bold">
-              <span className="pr-2 float-right">Score</span>
+              <span className="pr-2 float-right">{t('common', 'score')}</span>
             </div>
           </div>
 

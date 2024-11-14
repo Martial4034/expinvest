@@ -46,8 +46,8 @@ export const guideData: GuideStep[] = [
   {
     step: 4,
     messages: {
-      en: "To start {PSEUDO}, go to the Oxelta app.",
-      fr: "Pour commencer {PSEUDO}, aller sur l&apos;application Oxelta."
+      en: "To start, go to the Oxelta app.",
+      fr: "Pour commencer, aller sur l&apos;application Oxelta."
     },
     showMessage: true
   },

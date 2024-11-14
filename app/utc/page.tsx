@@ -67,7 +67,7 @@ export default function Page() {
     }
   }, []);
 
-  // Mise à jour des phrases de chargement
+  // Mise à jour des phrases de chargement avec la langue
   const updateLoadingPhrase = useCallback(() => {
     setCurrentPhrase(prev => {
       const currentIndex = loadingPhrases.findIndex(phrase => phrase === prev);
@@ -87,26 +87,26 @@ export default function Page() {
 
   useEffect(() => {
     const storedLanguage = localStorage.getItem('languageSelected');
-    setLanguage(storedLanguage === 'fr' ? 'fr' : 'en');
-  }, []);
+    const selectedLanguage = storedLanguage === 'fr' ? 'fr' : 'en';
+    setLanguage(selectedLanguage);
 
-  useEffect(() => {
     const unityContainer = unityContainerRef.current;
     if (!unityContainer) return;
 
     handleResize();
     window.addEventListener('resize', handleResize);
 
+    const buildPrefix = selectedLanguage === 'fr' ? 'BuildFR' : 'BuildEN';
     const script = document.createElement('script');
-    script.src = `/Utc/${language}/Build/Build${language.toUpperCase()}.loader.js`;
+    script.src = `/Utc/${selectedLanguage}/Build/${buildPrefix}.loader.js`;
     script.async = true;
     script.onload = () => {
       if (typeof createUnityInstance === 'function') {
         createUnityInstance(unityContainer, {
-          dataUrl: `/Utc/${language}/Build/Build${language.toUpperCase()}.data.br`,
-          frameworkUrl: `/Utc/${language}/Build/Build${language.toUpperCase()}.framework.js.br`,
-          codeUrl: `/Utc/${language}/Build/Build${language.toUpperCase()}.wasm.br`,
-          streamingAssetsUrl: `/Utc/${language}/StreamingAssets`,
+          dataUrl: `/Utc/${selectedLanguage}/Build/${buildPrefix}.data.br`,
+          frameworkUrl: `/Utc/${selectedLanguage}/Build/${buildPrefix}.framework.js.br`,
+          codeUrl: `/Utc/${selectedLanguage}/Build/${buildPrefix}.wasm.br`,
+          streamingAssetsUrl: `/Utc/${selectedLanguage}/StreamingAssets`,
           companyName: 'OXELTA',
           productName: 'OXELTA Game',
           productVersion: '1.0',
@@ -144,12 +144,11 @@ export default function Page() {
     <div className="w-screen h-screen overflow-hidden bg-black flex justify-center items-center">
       {isLoading && (
         <div className="absolute inset-0 flex flex-col items-center justify-center z-10 bg-black">
-          {/* Spinner */}
           <div className="w-12 h-12 border-4 border-white border-t-transparent rounded-full animate-spin mb-8" />
           
-          {/* Phrase de chargement */}
+          {/* Modification ici pour afficher la phrase dans la bonne langue */}
           <div className="text-white text-center max-w-md px-4 animate-pulse">
-            {currentPhrase.en}
+            {currentPhrase[language as keyof typeof currentPhrase]}
           </div>
         </div>
       )}

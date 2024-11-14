@@ -101,7 +101,7 @@ const menuButtonText = {
   }, [message, isTooltipVisible]);
 
   useEffect(() => {
-    const isUTCPage = ['/utc', '/utcFR', '/utcUK'].includes(pathname || '');
+    const isUTCPage = ['/utc', '/recap'].includes(pathname || '');
     setShouldRender(!isUTCPage);
   }, [pathname]);
 

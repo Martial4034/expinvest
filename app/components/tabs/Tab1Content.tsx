@@ -2,10 +2,12 @@
 
 import { Button } from "@/app/components/ui/button";
 import { useGuide } from "@/app/context/GuideContext";
+import { useTranslation } from "@/app/hooks/useTranslation";
 import Image from "next/image";
 
 export default function Tab1Content() {
   const { incrementStep } = useGuide();
+  const { t } = useTranslation();
 
   const handleBuyClick = () => {
     const guideStep = parseInt(localStorage.getItem('guideStep') || '0', 10);
@@ -30,20 +32,20 @@ export default function Tab1Content() {
         
         <div className="w-2/3 flex flex-col items-center space-y-8">
           <p className="text-lg md:text-2xl pp-telegraf-bold text-white text-center max-w-xl">
-            Le token OXLT permet aux joueurs d&apos;améliorer et de personnaliser leur expérience dans nos jeux.
+            {t('tab1', 'tokenDescription')}
           </p>
           
           <div className="w-full max-w-md">
-            <div className="bg-transparent rounded-full border-4 border-yellow-400 px-6 py-3 flex items-center justify-between">
+            <div 
+              className="bg-transparent rounded-full border-4 border-yellow-400 px-6 py-3 flex items-center justify-between cursor-pointer hover:bg-yellow-400/30 hover:text-black"
+              onClick={handleBuyClick}
+            >
               <span className="font-bold text-xl md:text-2xl pp-telegraf-bold text-white">
-                $10 / 1000 OXLT
+                {t('tab1', 'priceLabel')}
               </span>
-              <Button 
-                className="text-white text-xl md:text-2xl bg-transparent hover:bg-transparent rounded-full font-bold"
-                onClick={handleBuyClick}
-              >
-                BUY
-              </Button>
+              <span className="text-white text-xl md:text-2xl font-bold">
+                {t('common', 'buy')}
+              </span>
             </div>
           </div>
         </div>
