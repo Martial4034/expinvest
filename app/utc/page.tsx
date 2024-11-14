@@ -131,10 +131,16 @@ export default function Page() {
     const unityContainer = unityContainerRef.current;
     if (!unityContainer) return;
 
+    const canvas = document.createElement('canvas');
+    canvas.id = 'unity-canvas';
+    canvas.style.width = '100%';
+    canvas.style.height = '100%';
+    unityContainer.appendChild(canvas);
+
     const handleResize = () => {
-      if (unityContainer) {
-        unityContainer.style.width = `${window.innerWidth}px`;
-        unityContainer.style.height = `${window.innerHeight}px`;
+      if (canvas) {
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
       }
     };
 
@@ -149,7 +155,7 @@ export default function Page() {
 
     script.onload = () => {
       if (typeof createUnityInstance === 'function') {
-        createUnityInstance(unityContainer, {
+        createUnityInstance(canvas, {
           dataUrl: `${buildPath}Build/${buildSettings}.data.br`,
           frameworkUrl: `${buildPath}Build/${buildSettings}.framework.js.br`,
           codeUrl: `${buildPath}Build/${buildSettings}.wasm.br`,
@@ -188,6 +194,9 @@ export default function Page() {
       }
       if (script.parentNode) {
         script.parentNode.removeChild(script);
+      }
+      if (canvas.parentNode) {
+        canvas.parentNode.removeChild(canvas);
       }
     };
   }, [buildPath, buildSettings]);
@@ -275,6 +284,7 @@ export default function Page() {
       <div
         ref={unityContainerRef}
         className="unity-container w-full h-full"
+        style={{ position: 'relative' }}
       />
     </div>
   );
