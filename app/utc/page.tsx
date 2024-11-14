@@ -1,6 +1,9 @@
 'use client';
 
 import { useEffect, useRef, useState } from 'react';
+import Image from 'next/image';
+import { Progress } from '@/app/components/ui/progress'; // Assurez-vous que le chemin est correct
+import { loadingPhrases } from './LoadingPhrases';
 
 interface UnityConfig {
   dataUrl: string;
@@ -14,6 +17,7 @@ interface UnityConfig {
   matchWebGLToCanvasSize?: boolean | number;
   devicePixelRatio?: number;
   canvas?: HTMLCanvasElement;
+  onProgress?: (progress: number) => void; // Ajout de onProgress
 }
 
 interface UnityInstance {
@@ -24,7 +28,6 @@ interface UnityInstance {
     parameter?: string | number | boolean
   ): void;
   SetFullscreen(fullscreen: boolean): void;
-  // Add other methods and properties if needed
 }
 
 declare global {
@@ -34,12 +37,17 @@ declare global {
   ): Promise<UnityInstance>;
 }
 
+type Language = 'en' | 'fr';
+
 export default function Page() {
   const unityContainerRef = useRef<HTMLCanvasElement>(null);
-  const [language, setLanguage] = useState('en');
+  const [language, setLanguage] = useState<Language>('en');
+  const [progress, setProgress] = useState(0);
+  const [loadingPhrase, setLoadingPhrase] = useState('');
+  const [isLoaded, setIsLoaded] = useState(false);
 
   useEffect(() => {
-    const storedLanguage = localStorage.getItem('languageSelected');
+    const storedLanguage = localStorage.getItem('languageSelected') as Language;
     setLanguage(storedLanguage === 'fr' ? 'fr' : 'en');
   }, []);
 
@@ -62,9 +70,13 @@ export default function Page() {
           productName: 'OXELTA Game',
           productVersion: '1.0',
           canvas: unityContainer,
+          onProgress: (unityProgress: number) => {
+            setProgress(unityProgress * 100);
+          },
         })
           .then((unityInstance: UnityInstance) => {
             console.log('Unity instance created:', unityInstance);
+            setIsLoaded(true);
           })
           .catch((error: Error) => {
             console.error('Unity instance creation failed:', error);
@@ -87,14 +99,45 @@ export default function Page() {
     };
   }, [language]);
 
+  useEffect(() => {
+    const changePhrase = () => {
+      const phrases = loadingPhrases.map((phrase) => phrase[language]);
+      const randomPhrase = phrases[Math.floor(Math.random() * phrases.length)];
+      setLoadingPhrase(randomPhrase);
+    };
+
+    changePhrase(); // Phrase initiale
+    const interval = setInterval(changePhrase, 5000); // Changement toutes les 5 secondes
+
+    return () => {
+      clearInterval(interval);
+    };
+  }, [language]);
+
   return (
-    <div className="flex justify-center items-center h-screen">
-      <canvas
-        id="unity-canvas"
-        ref={unityContainerRef}
-        className="unity-container"
-        style={{ width: '960px', height: '600px' }}
-      />
+    <div className="flex justify-center items-center h-screen bg-black">
+      {isLoaded ? (
+        <div className="relative w-full h-0 pb-[56.25%]">
+          <canvas
+            id="unity-canvas"
+            ref={unityContainerRef}
+            className="absolute top-0 left-0 w-full h-full"
+          />
+        </div>
+      ) : (
+        <div className="flex flex-col items-center">
+          <Image
+            src="/App/Logo_Utc1.png"
+            alt="UNDER THE CLASH"
+            width={500}
+            height={300}
+          />
+          <div className="w-[300px] mt-6">
+            <Progress value={progress} className="h-3" />
+          </div>
+          <p className="text-white mt-4 text-center">{loadingPhrase}</p>
+        </div>
+      )}
     </div>
   );
 }
