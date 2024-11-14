@@ -2,11 +2,7 @@ import { useState, useEffect } from 'react';
 import { translations, Language } from '../translations';
 
 type TranslationType = typeof translations.en;
-type NestedKeyOf<ObjectType extends object> = {
-  [Key in keyof ObjectType & (string | number)]: ObjectType[Key] extends object
-    ? `${Key}` | `${Key}.${NestedKeyOf<ObjectType[Key]>}`
-    : `${Key}`;
-}[keyof ObjectType & (string | number)];
+type NestedObject = Record<string, unknown>;
 
 export const useTranslation = () => {
   const [language, setLanguage] = useState<Language>('en');
@@ -18,15 +14,23 @@ export const useTranslation = () => {
     }
   }, []);
 
-  const getNestedValue = (obj: any, path: string): string => {
-    return path.split('.').reduce((acc, part) => acc?.[part], obj) as string;
+  const getNestedValue = (
+    obj: Record<string, unknown>,
+    path: string
+  ): string => {
+    return path.split('.').reduce<unknown>((acc: unknown, part: string) => {
+      if (acc && typeof acc === 'object') {
+        return (acc as Record<string, unknown>)[part];
+      }
+      return '';
+    }, obj) as string;
   };
 
   const t = (section: keyof TranslationType, key: string, nested?: boolean): string => {
     if (nested) {
-      const value = getNestedValue(translations[language][section], key);
-      const fallback = getNestedValue(translations.en[section], key);
-      return value || fallback || key;
+      const value = getNestedValue(translations[language][section] as Record<string, unknown>, key);
+      const fallback = getNestedValue(translations.en[section] as Record<string, unknown>, key);
+      return (value as string) || (fallback as string) || key;
     }
     
     const translation = translations[language][section] as Record<string, string>;
