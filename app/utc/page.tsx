@@ -1,8 +1,6 @@
 'use client';
 
-import { useEffect, useRef, useState } from 'react';
-import Image from 'next/image';
-import { Progress } from '@/app/components/ui/progress'; // Assurez-vous que le chemin est correct
+import { useEffect, useRef, useState, useCallback } from 'react';
 import { loadingPhrases } from './LoadingPhrases';
 
 interface UnityConfig {
@@ -17,7 +15,6 @@ interface UnityConfig {
   matchWebGLToCanvasSize?: boolean | number;
   devicePixelRatio?: number;
   canvas?: HTMLCanvasElement;
-  onProgress?: (progress: number) => void; // Ajout de onProgress
 }
 
 interface UnityInstance {
@@ -28,6 +25,7 @@ interface UnityInstance {
     parameter?: string | number | boolean
   ): void;
   SetFullscreen(fullscreen: boolean): void;
+  // Add other methods and properties if needed
 }
 
 declare global {
@@ -37,24 +35,67 @@ declare global {
   ): Promise<UnityInstance>;
 }
 
-type Language = 'en' | 'fr';
-
 export default function Page() {
   const unityContainerRef = useRef<HTMLCanvasElement>(null);
-  const [language, setLanguage] = useState<Language>('en');
-  const [progress, setProgress] = useState(0);
-  const [loadingPhrase, setLoadingPhrase] = useState('');
-  const [isLoaded, setIsLoaded] = useState(false);
+  const [language, setLanguage] = useState('en');
+  const [isLoading, setIsLoading] = useState(true);
+  const [currentPhrase, setCurrentPhrase] = useState(loadingPhrases[0]);
+  const phraseInterval = useRef<NodeJS.Timeout>();
+
+  // Fonction de redimensionnement avec ratio 16:9
+  const handleResize = useCallback(() => {
+    if (unityContainerRef.current) {
+      const aspectRatio = 16 / 9;
+      const windowWidth = window.innerWidth;
+      const windowHeight = window.innerHeight;
+      const windowRatio = windowWidth / windowHeight;
+      
+      let newWidth, newHeight;
+      
+      if (windowRatio > aspectRatio) {
+        // Si la fenêtre est plus large que 16:9
+        newHeight = windowHeight;
+        newWidth = windowHeight * aspectRatio;
+      } else {
+        // Si la fenêtre est plus haute que 16:9
+        newWidth = windowWidth;
+        newHeight = windowWidth / aspectRatio;
+      }
+
+      unityContainerRef.current.style.width = `${newWidth}px`;
+      unityContainerRef.current.style.height = `${newHeight}px`;
+    }
+  }, []);
+
+  // Mise à jour des phrases de chargement
+  const updateLoadingPhrase = useCallback(() => {
+    setCurrentPhrase(prev => {
+      const currentIndex = loadingPhrases.findIndex(phrase => phrase === prev);
+      const nextIndex = (currentIndex + 1) % loadingPhrases.length;
+      return loadingPhrases[nextIndex];
+    });
+  }, []);
 
   useEffect(() => {
-    const storedLanguage = localStorage.getItem('languageSelected') as Language;
+    phraseInterval.current = setInterval(updateLoadingPhrase, 4000);
+    return () => {
+      if (phraseInterval.current) {
+        clearInterval(phraseInterval.current);
+      }
+    };
+  }, [updateLoadingPhrase]);
+
+  useEffect(() => {
+    const storedLanguage = localStorage.getItem('languageSelected');
     setLanguage(storedLanguage === 'fr' ? 'fr' : 'en');
   }, []);
 
   useEffect(() => {
     const unityContainer = unityContainerRef.current;
-
     if (!unityContainer) return;
+
+    handleResize();
+    window.addEventListener('resize', handleResize);
 
     const script = document.createElement('script');
     script.src = `/Utc/${language}/Build/Build${language.toUpperCase()}.loader.js`;
@@ -70,13 +111,12 @@ export default function Page() {
           productName: 'OXELTA Game',
           productVersion: '1.0',
           canvas: unityContainer,
-          onProgress: (unityProgress: number) => {
-            setProgress(unityProgress * 100);
-          },
+          matchWebGLToCanvasSize: true, // Important pour le redimensionnement
+          devicePixelRatio: window.devicePixelRatio, // Pour la netteté
         })
           .then((unityInstance: UnityInstance) => {
             console.log('Unity instance created:', unityInstance);
-            setIsLoaded(true);
+            setIsLoading(false);
           })
           .catch((error: Error) => {
             console.error('Unity instance creation failed:', error);
@@ -93,51 +133,32 @@ export default function Page() {
     document.body.appendChild(script);
 
     return () => {
+      window.removeEventListener('resize', handleResize);
       if (script.parentNode) {
         script.parentNode.removeChild(script);
       }
     };
-  }, [language]);
-
-  useEffect(() => {
-    const changePhrase = () => {
-      const phrases = loadingPhrases.map((phrase) => phrase[language]);
-      const randomPhrase = phrases[Math.floor(Math.random() * phrases.length)];
-      setLoadingPhrase(randomPhrase);
-    };
-
-    changePhrase(); // Phrase initiale
-    const interval = setInterval(changePhrase, 5000); // Changement toutes les 5 secondes
-
-    return () => {
-      clearInterval(interval);
-    };
-  }, [language]);
+  }, [language, handleResize]);
 
   return (
-    <div className="flex justify-center items-center h-screen bg-black">
-      {isLoaded ? (
-        <div className="relative w-full h-0 pb-[56.25%]">
-          <canvas
-            id="unity-canvas"
-            ref={unityContainerRef}
-            className="absolute top-0 left-0 w-full h-full"
-          />
-        </div>
-      ) : (
-        <div className="flex flex-col items-center">
-          <Image
-            src="/App/Logo_Utc1.png"
-            alt="UNDER THE CLASH"
-            width={500}
-            height={300}
-          />
-          <div className="w-[300px] mt-6">
-            <Progress value={progress} className="h-3" />
+    <div className="w-screen h-screen overflow-hidden bg-black flex justify-center items-center">
+      {isLoading && (
+        <div className="absolute inset-0 flex flex-col items-center justify-center z-10 bg-black">
+          {/* Spinner */}
+          <div className="w-12 h-12 border-4 border-white border-t-transparent rounded-full animate-spin mb-8" />
+          
+          {/* Phrase de chargement */}
+          <div className="text-white text-center max-w-md px-4 animate-pulse">
+            {currentPhrase.en}
           </div>
-          <p className="text-white mt-4 text-center">{loadingPhrase}</p>
         </div>
       )}
+      <canvas
+        id="unity-canvas"
+        ref={unityContainerRef}
+        className="unity-container"
+        style={{ visibility: isLoading ? 'hidden' : 'visible' }}
+      />
     </div>
   );
 }
