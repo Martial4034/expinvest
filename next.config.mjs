@@ -5,12 +5,23 @@ const nextConfig = {
     async headers() {
       return [
         {
-          source: '/Utc/:lang/Build/:path*.js.br',
+          // Configuration globale pour tous les fichiers .br
+          source: '/Utc/:lang/Build/:file*.br',
           headers: [
             {
               key: 'Content-Encoding',
               value: 'br',
             },
+            {
+              key: 'Cache-Control',
+              value: 'public, max-age=31536000, immutable',
+            },
+          ],
+        },
+        {
+          // Configuration spécifique pour les fichiers JavaScript
+          source: '/Utc/:lang/Build/:file*.js',
+          headers: [
             {
               key: 'Content-Type',
               value: 'application/javascript',
@@ -18,12 +29,9 @@ const nextConfig = {
           ],
         },
         {
-          source: '/Utc/:lang/Build/:path*.wasm.br',
+          // Configuration spécifique pour les fichiers WebAssembly
+          source: '/Utc/:lang/Build/:file*.wasm',
           headers: [
-            {
-              key: 'Content-Encoding',
-              value: 'br',
-            },
             {
               key: 'Content-Type',
               value: 'application/wasm',
@@ -31,28 +39,24 @@ const nextConfig = {
           ],
         },
         {
-          source: '/Utc/:lang/Build/:path*.data.br',
+          // Configuration spécifique pour les fichiers data
+          source: '/Utc/:lang/Build/:file*.data',
           headers: [
-            {
-              key: 'Content-Encoding',
-              value: 'br',
-            },
             {
               key: 'Content-Type',
               value: 'application/octet-stream',
             },
           ],
         },
-        {
-          source: '/Utc/:lang/Build/:path*.loader.js',
-          headers: [
-            {
-              key: 'Content-Type',
-              value: 'application/javascript',
-            },
-          ],
-        },
       ];
+    },
+    // Ajout de la configuration pour les fichiers statiques
+    webpack: (config, { isServer }) => {
+      config.resolve.fallback = {
+        ...config.resolve.fallback,
+        fs: false,
+      };
+      return config;
     },
   };
   
