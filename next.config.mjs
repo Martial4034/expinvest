@@ -5,7 +5,7 @@ const nextConfig = {
     async headers() {
       return [
         {
-          source: '/Utc/Build/:path*.js.br',
+          source: '/Utc/:lang/Build/:path*.js.br',
           headers: [
             {
               key: 'Content-Encoding',
@@ -18,7 +18,7 @@ const nextConfig = {
           ],
         },
         {
-          source: '/Utc/Build/:path*.wasm.br',
+          source: '/Utc/:lang/Build/:path*.wasm.br',
           headers: [
             {
               key: 'Content-Encoding',
@@ -31,7 +31,7 @@ const nextConfig = {
           ],
         },
         {
-          source: '/Utc/Build/:path*.data.br',
+          source: '/Utc/:lang/Build/:path*.data.br',
           headers: [
             {
               key: 'Content-Encoding',
@@ -40,6 +40,15 @@ const nextConfig = {
             {
               key: 'Content-Type',
               value: 'application/octet-stream',
+            },
+          ],
+        },
+        {
+          source: '/Utc/:lang/Build/:path*.loader.js',
+          headers: [
+            {
+              key: 'Content-Type',
+              value: 'application/javascript',
             },
           ],
         },
