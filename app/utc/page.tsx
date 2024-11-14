@@ -1,7 +1,6 @@
 'use client';
 
 import { useEffect, useRef, useState, useCallback } from 'react';
-import { useGuide } from "@/app/context/GuideContext";
 import styles from './Unity.module.css';
 import Image from 'next/image';
 import { Progress } from "@/app/components/ui/progress"
@@ -33,43 +32,19 @@ interface UnityInstance {
 
 declare global {
   function createUnityInstance(
-    canvas: HTMLElement,
+    canvas: HTMLCanvasElement,
     config: UnityConfig
   ): Promise<UnityInstance>;
 }
 
 export default function Page() {
-  const { incrementStep } = useGuide();
-  const unityContainerRef = useRef<HTMLDivElement>(null);
+  const unityContainerRef = useRef<HTMLCanvasElement>(null);
   const [progress, setProgress] = useState(0);
   const progressTimeout = useRef<NodeJS.Timeout>();
   const [isAnimating, setIsAnimating] = useState(false);
   const imageRef = useRef<HTMLDivElement>(null);
-  const [buildPath, setBuildPath] = useState('/Utc/en/');
-  const [buildSettings, setBuildSettings] = useState('BuildEN');
   const [currentPhrase, setCurrentPhrase] = useState<LoadingPhrase>(loadingPhrases[0]);
   const phraseInterval = useRef<NodeJS.Timeout>();
-  const [language, setLanguage] = useState<string>('en');
-  const [isMounted, setIsMounted] = useState(false);
-
-  useEffect(() => {
-    setIsMounted(true);
-    const storedLanguage = localStorage.getItem('languageSelected');
-    setLanguage(storedLanguage === 'fr' ? 'fr' : 'en');
-  }, []);
-
-  useEffect(() => {
-    if (!isMounted) return;
-    
-    const storedLanguage = language;
-    if (storedLanguage === 'fr') {
-      setBuildPath('/Utc/fr/');
-      setBuildSettings('BuildFR');
-    } else {
-      setBuildPath('/Utc/en/');
-      setBuildSettings('BuildEN');
-    }
-  }, [isMounted, language]);
 
   const simulateDynamicLoading = () => {
     const loadingSteps = [
@@ -95,7 +70,6 @@ export default function Page() {
 
     const scheduleNextStep = () => {
       if (currentStep >= loadingSteps.length) {
-        // Après le dernier palier, progression lente vers 99.9%
         const slowProgress = () => {
           setProgress(prev => {
             const increment = (99.9 - prev) * 0.1;
@@ -121,26 +95,13 @@ export default function Page() {
   };
 
   useEffect(() => {
-    const guideStep = parseInt(localStorage.getItem('guideStep') || '0', 10);
-    if (guideStep === 17) {
-      incrementStep();
-    }
-  }, [incrementStep]);
-
-  useEffect(() => {
     const unityContainer = unityContainerRef.current;
     if (!unityContainer) return;
 
-    const canvas = document.createElement('canvas');
-    canvas.id = 'unity-canvas';
-    canvas.style.width = '100%';
-    canvas.style.height = '100%';
-    unityContainer.appendChild(canvas);
-
     const handleResize = () => {
-      if (canvas) {
-        canvas.width = window.innerWidth;
-        canvas.height = window.innerHeight;
+      if (unityContainer) {
+        unityContainer.width = window.innerWidth;
+        unityContainer.height = window.innerHeight;
       }
     };
 
@@ -150,19 +111,20 @@ export default function Page() {
     simulateDynamicLoading();
 
     const script = document.createElement('script');
-    script.src = `${buildPath}Build/${buildSettings}.loader.js`;
+    script.src = '/Utc/Build/BuilFR.loader.js';
     script.async = true;
 
     script.onload = () => {
       if (typeof createUnityInstance === 'function') {
-        createUnityInstance(canvas, {
-          dataUrl: `${buildPath}Build/${buildSettings}.data`,
-          frameworkUrl: `${buildPath}Build/${buildSettings}.framework.js`,
-          codeUrl: `${buildPath}Build/${buildSettings}.wasm`,
-          streamingAssetsUrl: `${buildPath}StreamingAssets`,
+        createUnityInstance(unityContainer, {
+          dataUrl: '/Utc/Build/BuilFR.data.br',
+          frameworkUrl: '/Utc/Build/BuilFR.framework.js.br',
+          codeUrl: '/Utc/Build/BuilFR.wasm.br',
+          streamingAssetsUrl: '/Utc/StreamingAssets',
           companyName: 'OXELTA',
           productName: 'OXELTA Game',
           productVersion: '1.0',
+          canvas: unityContainer,
           matchWebGLToCanvasSize: true,
           devicePixelRatio: window.devicePixelRatio,
         })
@@ -195,18 +157,13 @@ export default function Page() {
       if (script.parentNode) {
         script.parentNode.removeChild(script);
       }
-      if (canvas.parentNode) {
-        canvas.parentNode.removeChild(canvas);
-      }
     };
-  }, [buildPath, buildSettings]);
+  }, []);
 
   const handleClick = (event: React.MouseEvent<HTMLDivElement>) => {
-    // Animation de l'image
     setIsAnimating(true);
     setTimeout(() => setIsAnimating(false), 300);
 
-    // Effet de ripple
     if (imageRef.current) {
       const rect = imageRef.current.getBoundingClientRect();
       const x = event.clientX - rect.left;
@@ -234,9 +191,7 @@ export default function Page() {
   }, []);
 
   useEffect(() => {
-    // Changement de phrase toutes les 4 secondes
     phraseInterval.current = setInterval(updateLoadingPhrase, 4000);
-
     return () => {
       if (phraseInterval.current) {
         clearInterval(phraseInterval.current);
@@ -273,18 +228,14 @@ export default function Page() {
             {Math.round(progress)}%
           </div>
           <div className="mt-4 text-white text-xl pp-telegraf-bold max-w-[500px] text-center animate-fade-in">
-            {isMounted && (
-              language === 'fr' 
-                ? currentPhrase.fr 
-                : currentPhrase.en
-            )}
+            {currentPhrase.en}
           </div>
         </div>
       </div>
-      <div
+      <canvas
+        id="unity-canvas"
         ref={unityContainerRef}
-        className="unity-container w-full h-full"
-        style={{ position: 'relative' }}
+        className="w-full h-full"
       />
     </div>
   );
