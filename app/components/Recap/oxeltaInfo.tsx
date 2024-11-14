@@ -254,7 +254,7 @@ const OxeltaInfo: React.FC = () => {
                     )}
                   >
                     <Image
-                      src={`/Invest/${type}.png`}
+                      src={`/Invest/${type.toLowerCase()}.png`}
                       alt={type}
                       width={120}
                       height={120}
