@@ -4,15 +4,24 @@ import { Button } from "@/app/components/ui/button";
 import { useGuide } from "@/app/context/GuideContext";
 import { useTranslation } from "@/app/hooks/useTranslation";
 import Image from "next/image";
+import { useEffect, useState } from "react";
 
 export default function Tab1Content() {
-  const { incrementStep } = useGuide();
+  const { incrementStep, step } = useGuide();
   const { t } = useTranslation();
+  const [isStep6, setIsStep6] = useState(false);
+  const [hasClicked, setHasClicked] = useState(false);
+
+  useEffect(() => {
+    const oxltBalance = localStorage.getItem('oxltBalance');
+    setIsStep6(step === 6 && !oxltBalance);
+  }, [step]);
 
   const handleBuyClick = () => {
-    const guideStep = parseInt(localStorage.getItem('guideStep') || '0', 10);
-    if (guideStep === 6) {
+    if (step === 6) {
       localStorage.setItem('oxltBalance', '1000');
+      setIsStep6(false);
+      setHasClicked(true);
       incrementStep();
     }
   };
@@ -37,7 +46,9 @@ export default function Tab1Content() {
           
           <div className="w-full max-w-md">
             <div 
-              className="bg-transparent rounded-full border-4 border-yellow-400 px-6 py-3 flex items-center justify-between cursor-pointer hover:bg-yellow-400/30 hover:text-black"
+              className={`bg-transparent rounded-full border-4 border-yellow-400 px-6 py-3 flex items-center justify-between cursor-pointer hover:bg-yellow-400/30 hover:text-black transition-all duration-1000 ${
+                isStep6 && !hasClicked ? 'animate-pulse' : ''
+              }`}
               onClick={handleBuyClick}
             >
               <span className="font-bold text-xl md:text-2xl pp-telegraf-bold text-white">

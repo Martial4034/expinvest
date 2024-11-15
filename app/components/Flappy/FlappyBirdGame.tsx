@@ -515,7 +515,7 @@ const FlappyBirdGame: React.FC = () => {
 
               <button
                 onClick={handleBetClick}
-                className="bg-white text-[#4695c6] px-12 py-4 text-2xl font-bold rounded-lg border-2 border-white hover:bg-transparent hover:text-white transition-all quantico"
+                className="bg-white text-[#4695c6] px-12 py-4 text-2xl font-bold rounded-lg border-2 border-white hover:bg-transparent hover:text-white transition-all quantico animate-bet-pulse"
               >
                 {t('flappyGame', 'bet')}
               </button>
@@ -529,6 +529,31 @@ const FlappyBirdGame: React.FC = () => {
           <Scoreboard scoreboardData={scoreboardData} userPseudo={userPseudo} />
         )}
       </div>
+
+      <style jsx global>{`
+        @keyframes bet-pulse {
+          0% {
+            box-shadow: 0 0 0 0 rgba(255, 255, 255, 0.7);
+            background-color: rgba(255, 255, 255, 1);
+          }
+          70% {
+            box-shadow: 0 0 0 15px rgba(255, 255, 255, 0);
+            background-color: rgba(255, 255, 255, 0.8);
+          }
+          100% {
+            box-shadow: 0 0 0 0 rgba(255, 255, 255, 0);
+            background-color: rgba(255, 255, 255, 1);
+          }
+        }
+
+        .animate-bet-pulse {
+          animation: bet-pulse 1s infinite cubic-bezier(0.4, 0, 0.6, 1);
+        }
+
+        .animate-bet-pulse:hover {
+          animation: none;
+        }
+      `}</style>
     </div>
   );
 };

@@ -15,7 +15,7 @@ export const REVIVE_COST = 100;
 export const REVIVE_TIMER = 10;
 
 export const BIRD_CONFIG = {
-  GRAVITY: 0.08,
+  GRAVITY: 0.075,
   THRUST: -3,
   START_X: 50,
   START_Y: (CANVAS_HEIGHT / 2) - 12.5,

@@ -239,15 +239,32 @@ const menuButtonText = {
           cursor: pointer;
           font-size: 20px;
           font-family: 'PPTelegraf', sans-serif;
-          transition: all 0.3s ease;
+          transition: all 1s ease;
           margin-left: 10px;
           height: 45px;
           display: flex;
           align-items: center;
+          animation: pulse 1s infinite cubic-bezier(0.4, 0, 0.6, 1);
         }
 
         .menu-button:hover {
           background-color: rgba(255, 215, 0, 0.2);
+          animation: none;
+        }
+
+        @keyframes pulse {
+          0% {
+            box-shadow: 0 0 0 0 rgba(255, 215, 0, 0.7);
+            background-color: rgba(255, 215, 0, 0.2);
+          }
+          70% {
+            box-shadow: 0 0 0 15px rgba(255, 215, 0, 0);
+            background-color: rgba(255, 215, 0, 0);
+          }
+          100% {
+            box-shadow: 0 0 0 0 rgba(255, 215, 0, 0);
+            background-color: rgba(255, 215, 0, 0.2);
+          }
         }
 
         .nav-button {
