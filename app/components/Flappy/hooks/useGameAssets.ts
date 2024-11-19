@@ -43,24 +43,24 @@ export const useGameAssets = () => {
 
     const loadImages = () => {
       // Charger les images de fond et de décor
-      bgImage.current = loadImage("/flappy/img/BG.png");
-      groundImage.current = loadImage("/flappy/img/ground.png");
-      pipeTopImage.current = loadImage("/flappy/img/toppipe.png");
-      pipeBottomImage.current = loadImage("/flappy/img/botpipe.png");
-      getReadyImage.current = loadImage("/flappy/img/getready.png");
-      gameOverImage.current = loadImage("/flappy/img/go.png");
+      bgImage.current = loadImage("/flappy/newimg/BG.png");
+      groundImage.current = loadImage("/flappy/newimg/ground.png");
+      pipeTopImage.current = loadImage("/flappy/newimg/toppipe.png");
+      pipeBottomImage.current = loadImage("/flappy/newimg/botpipe.png");
+      getReadyImage.current = loadImage("/flappy/newimg/getready.png");
+      gameOverImage.current = loadImage("/flappy/newimg/go.png");
 
       // Charger les images de tap
       tapImages.current = [];
-      tapImages.current.push(loadImage("/flappy/img/tap/t0.png"));
-      tapImages.current.push(loadImage("/flappy/img/tap/t1.png"));
+      tapImages.current.push(loadImage("/flappy/newimg/tap/t0.png"));
+      tapImages.current.push(loadImage("/flappy/newimg/tap/t1.png"));
 
       // Charger les images de l'oiseau
       birdImages.current = [];
-      birdImages.current.push(loadImage("/flappy/img/bird/b0.png"));
-      birdImages.current.push(loadImage("/flappy/img/bird/b1.png"));
-      birdImages.current.push(loadImage("/flappy/img/bird/b2.png"));
-      birdImages.current.push(loadImage("/flappy/img/bird/b0.png"));
+      birdImages.current.push(loadImage("/flappy/newimg/bird/b0.png"));
+      birdImages.current.push(loadImage("/flappy/newimg/bird/b1.png"));
+      birdImages.current.push(loadImage("/flappy/newimg/bird/b2.png"));
+      birdImages.current.push(loadImage("/flappy/newimg/bird/b0.png"));
     };
 
     const loadSounds = () => {
