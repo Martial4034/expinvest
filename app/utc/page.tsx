@@ -187,7 +187,7 @@ export default function Page() {
             <DialogHeader>
               <DialogTitle>Problème avec Safari</DialogTitle>
             </DialogHeader>
-            <p>Si la page ne s'affiche pas correctement, cliquez sur le bouton ci-dessous pour accéder au récapitulatif.</p>
+            <p>Si la page ne s&apos;affiche pas correctement, cliquez sur le bouton ci-dessous pour accéder au récapitulatif.</p>
             <DialogFooter>
               <Button onClick={() => (window.location.href = "/recap")}>
                 Aller au récapitulatif
