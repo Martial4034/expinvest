@@ -2,6 +2,9 @@
 
 import { useEffect, useRef, useState, useCallback } from 'react';
 import { loadingPhrases } from './LoadingPhrases';
+import { Button } from "@/app/components/ui/button"; 
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/app/components/ui/dialog";
+
 
 interface UnityConfig {
   dataUrl: string;
@@ -41,6 +44,32 @@ export default function Page() {
   const [isLoading, setIsLoading] = useState(true);
   const [currentPhrase, setCurrentPhrase] = useState(loadingPhrases[0]);
   const phraseInterval = useRef<NodeJS.Timeout>();
+  const [isSafari, setIsSafari] = useState(false);
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const [pendingRedirect, setPendingRedirect] = useState(false);
+
+  useEffect(() => {
+    // Détection du navigateur Safari
+    const userAgent = navigator.userAgent;
+    const isSafariBrowser = /^((?!chrome|android).)*safari/i.test(userAgent);
+    setIsSafari(isSafariBrowser);
+  }, []);
+
+  // Gérer la perte de focus sur la page
+  useEffect(() => {
+    const handleVisibilityChange = () => {
+      if (document.visibilityState === "hidden" && isSafari) {
+        // Afficher le pop-up seulement si Safari et perte de focus
+        setIsDialogOpen(true);
+      }
+    };
+
+    document.addEventListener("visibilitychange", handleVisibilityChange);
+
+    return () => {
+      document.removeEventListener("visibilitychange", handleVisibilityChange);
+    };
+  }, [isSafari]);
 
   // Fonction de redimensionnement avec ratio 16:9
   const handleResize = useCallback(() => {
@@ -151,6 +180,21 @@ export default function Page() {
             {currentPhrase[language as keyof typeof currentPhrase]}
           </div>
         </div>
+      )}
+      {isSafari && (
+        <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+          <DialogContent>
+            <DialogHeader>
+              <DialogTitle>Problème avec Safari</DialogTitle>
+            </DialogHeader>
+            <p>Si la page ne s'affiche pas correctement, cliquez sur le bouton ci-dessous pour accéder au récapitulatif.</p>
+            <DialogFooter>
+              <Button onClick={() => (window.location.href = "/recap")}>
+                Aller au récapitulatif
+              </Button>
+            </DialogFooter>
+          </DialogContent>
+        </Dialog>
       )}
       <canvas
         id="unity-canvas"
