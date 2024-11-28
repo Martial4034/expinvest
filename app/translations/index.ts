@@ -23,7 +23,7 @@ export const translations = {
       priceLabel: "$10 / 1000 OXLT"
     },
     tab2: {
-      nftDescription: "Oxelta&apos;s interoperable NFT, providing access to private events, in-game benefits and no advertisements."
+      nftDescription: "Oxelta's interoperable NFT, providing access to private events, in-game benefits and no advertisements."
     },
     tab4: {
       games: {
@@ -103,11 +103,11 @@ export const translations = {
       bet: "PARI"
     },
     tab1: {
-      tokenDescription: "Le token OXLT permet aux joueurs d&apos;améliorer et de personnaliser leur expérience dans nos jeux.",
+      tokenDescription: "Le token OXLT permet aux joueurs d' améliorer et de personnaliser leur expérience dans nos jeux.",
       priceLabel: "$10 / 1000 OXLT"
     },
     tab2: {
-      nftDescription: "NFT interopérable d&apos;Oxelta, offrant accès à des événements privés, avantages dans nos jeux et aucune publicité."
+      nftDescription: "NFT interopérable d' Oxelta, offrant accès à des événements privés, avantages dans nos jeux et aucune publicité."
     },
     tab4: {
       games: {
@@ -145,7 +145,7 @@ export const translations = {
     flappyGame: {
       waitingBet: "En attente de votre pari",
       pleasebet: "Veuillez parier sur le tableau à droite",
-      searchingPlayer: "Recherche d&apos;un joueur",
+      searchingPlayer: "Recherche d' un joueur",
       step: "Joueurs",
       gameStartsIn: "Début de la partie dans",
       congratulations: "Félicitations",
@@ -156,8 +156,8 @@ export const translations = {
     },
     recap: {
       title: "Dans cette simulation vous avez augmentez la valeur marchande du token OXLT",
-      buyingPressure: "En achetant des tokens, vous créez une pression acheteuse sur le marché, car l&apos;achat est directement lié à celui-ci.",
-      gameUsage: "En les utilisant dans nos jeux, vous avez réduit l&apos;offre en circulation et contribué à constituer un stock d&apos;OXLT pour Oxelta, destiné à être revendu dans nos jeux pour générer des revenus.",
+      buyingPressure: "En achetant des tokens, vous créez une pression acheteuse sur le marché, car l' achat est directement lié à celui-ci.",
+      gameUsage: "En les utilisant dans nos jeux, vous avez réduit l' offre en circulation et contribué à constituer un stock d' OXLT pour Oxelta, destiné à être revendu dans nos jeux pour générer des revenus.",
       joinPrivateSale: "Rejoindre la vente privée",
       investmentMethod: "Comment souhaitez-vous investir ?",
       investmentAmount: "Combien souhaitez-vous investir ?",

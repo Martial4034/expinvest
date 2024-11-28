@@ -31,7 +31,7 @@ export const guideData: GuideStep[] = [
     step: 2,
     messages: {
       en: "Welcome {PSEUDO} to the guided experience OXELTA!",
-      fr: "Bienvenue {PSEUDO} dans l&apos;éxperience guidée OXELTA !"
+      fr: "Bienvenue {PSEUDO} dans l'éxperience guidée OXELTA !"
     },
     showMessage: true
   },
@@ -39,7 +39,7 @@ export const guideData: GuideStep[] = [
     step: 3,
     messages: {
       en: "I am Sir Oxo, click on me if you need help.",
-      fr: "Je suis Sir Oxo, appuyer sur moi pour obtenir de l&apos;aide si besoin."
+      fr: "Je suis Sir Oxo, appuyer sur moi pour obtenir de l' aide si besoin."
     },
     showMessage: true
   },
@@ -47,7 +47,7 @@ export const guideData: GuideStep[] = [
     step: 4,
     messages: {
       en: "To start, go to the Oxelta app.",
-      fr: "Pour commencer, aller sur l&apos;application Oxelta."
+      fr: "Pour commencer, aller sur l' application Oxelta."
     },
     showMessage: true
   },
@@ -63,8 +63,8 @@ export const guideData: GuideStep[] = [
   {
     step: 6,
     messages: {
-      en: "Buy OXLT on the dedicated page by clicking on the &apos;BUY&apos; button",
-      fr: "Achetez des OXLT sur la page dédiée en cliquant sur le bouton &apos;BUY&apos;"
+      en: "Buy OXLT on the dedicated page by clicking on the BUY  button",
+      fr: "Achetez des OXLT sur la page dédiée en cliquant sur le bouton BUY"
     },
     showMessage: false,
     timer: 5
@@ -137,8 +137,8 @@ export const guideData: GuideStep[] = [
   {
     step: 14,
     messages: {
-      en: "Click on the &apos;PARIER&apos; button on the right",
-      fr: "Cliquez sur le bouton &apos;PARIER&apos; à droite"
+      en: "Click on the PARIER button on the right",
+      fr: "Cliquez sur le bouton PARIER à droite"
     },
     showMessage: false,
     timer: 1,
