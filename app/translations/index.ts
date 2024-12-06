@@ -103,7 +103,7 @@ export const translations = {
       bet: "PARI"
     },
     tab1: {
-      tokenDescription: "Le token OXLT permet aux joueurs d' améliorer et de personnaliser leur expérience dans nos jeux.",
+      tokenDescription: "Le token OXLT permet aux joueurs d'améliorer et de personnaliser leur expérience dans nos jeux.",
       priceLabel: "$10 / 1000 OXLT"
     },
     tab2: {
@@ -156,8 +156,8 @@ export const translations = {
     },
     recap: {
       title: "Dans cette simulation vous avez augmentez la valeur marchande du token OXLT",
-      buyingPressure: "En achetant des tokens, vous créez une pression acheteuse sur le marché, car l' achat est directement lié à celui-ci.",
-      gameUsage: "En les utilisant dans nos jeux, vous avez réduit l' offre en circulation et contribué à constituer un stock d' OXLT pour Oxelta, destiné à être revendu dans nos jeux pour générer des revenus.",
+      buyingPressure: "En achetant des tokens, vous créez une pression acheteuse sur le marché, car l'achat est directement lié à celui-ci.",
+      gameUsage: "En les utilisant dans nos jeux, vous avez réduit l'offre en circulation et contribué à constituer un stock d'OXLT pour Oxelta, destiné à être revendu dans nos jeux pour générer des revenus.",
       joinPrivateSale: "Rejoindre la vente privée",
       investmentMethod: "Comment souhaitez-vous investir ?",
       investmentAmount: "Combien souhaitez-vous investir ?",

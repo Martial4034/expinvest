@@ -22,7 +22,7 @@ export const BIRD_CONFIG = {
 };
 
 export const PIPE_CONFIG = {
-  GAP: 110,
+  GAP: 120,
   SPAWN_INTERVAL: 100,
-  SPEED: 1.5,
+  SPEED: 1.3,
 }; 

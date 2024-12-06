@@ -43,7 +43,7 @@ export const useGameAssets = () => {
 
     const loadImages = () => {
       // Charger les images de fond et de décor
-      bgImage.current = loadImage("/flappy/newimg/back.png");
+      bgImage.current = loadImage("/flappy/newimg/BACKGROUND.png");
       groundImage.current = loadImage("/flappy/newimg/ground.png");
       pipeTopImage.current = loadImage("/flappy/newimg/toppipe.png");
       pipeBottomImage.current = loadImage("/flappy/newimg/botpipe.png");

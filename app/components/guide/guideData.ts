@@ -64,7 +64,7 @@ export const guideData: GuideStep[] = [
     step: 6,
     messages: {
       en: "Buy OXLT on the dedicated page by clicking on the BUY  button",
-      fr: "Achetez des OXLT sur la page dédiée en cliquant sur le bouton BUY"
+      fr: "Achetez des OXLT sur la page dédiée en cliquant sur le bouton ACHETER"
     },
     showMessage: false,
     timer: 5

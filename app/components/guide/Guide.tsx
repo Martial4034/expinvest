@@ -276,6 +276,7 @@ const menuButtonText = {
           padding: 0 5px;
           margin-left: 10px;
           transition: all 0.3s ease;
+          animation: arrowPulse 1s infinite;
         }
 
         .nav-button:hover:not(:disabled) {
@@ -285,6 +286,18 @@ const menuButtonText = {
         .nav-button:disabled {
           opacity: 0.5;
           cursor: not-allowed;
+        }
+
+        @keyframes arrowPulse {
+          0% {
+            color: #666;
+          }
+          50% {
+            color: #FFD700;
+          }
+          100% {
+            color: #666;
+          }
         }
       `}</style>
     </>

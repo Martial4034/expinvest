@@ -169,6 +169,40 @@ export default function Page() {
     };
   }, [language, handleResize]);
 
+  // Ajout de l'effet pour surveiller le localStorage
+  useEffect(() => {
+    // Vérification initiale
+    if (localStorage.getItem('mvpFinish')) {
+      localStorage.removeItem('mvpFinish'); // Suppression de la valeur
+      if (isSafari) {
+        setIsDialogOpen(true);
+      } else {
+        window.location.href = '/recap';
+      }
+      return;
+    }
+
+    // Fonction pour gérer les changements de localStorage
+    const handleStorageChange = (e: StorageEvent) => {
+      if (e.key === 'mvpFinish') {
+        localStorage.removeItem('mvpFinish'); // Suppression de la valeur
+        if (isSafari) {
+          setIsDialogOpen(true);
+        } else {
+          window.location.href = '/recap';
+        }
+      }
+    };
+
+    // Ajout du listener
+    window.addEventListener('storage', handleStorageChange);
+
+    // Nettoyage du listener
+    return () => {
+      window.removeEventListener('storage', handleStorageChange);
+    };
+  }, [isSafari]);
+
   return (
     <div className="w-screen h-screen overflow-hidden bg-black flex justify-center items-center">
       {isLoading && (
