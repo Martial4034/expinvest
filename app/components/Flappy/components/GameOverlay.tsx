@@ -44,7 +44,6 @@ export const GameOverlay: React.FC<GameOverlayProps> = ({
             {/* Score Display */}
             <div className="text-white text-2xl font-qualy mb-4">
               <div>{t('common', 'score')}: {gameState.state.score}</div>
-              <div>{t('common', 'best')}: {gameState.refs.scoreRef.current}</div>
             </div>
 
             {/* Revive Button - only show if not used */}
