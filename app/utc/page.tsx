@@ -175,6 +175,7 @@ export default function Page() {
     if (localStorage.getItem('mvpFinish')) {
       localStorage.removeItem('mvpFinish'); // Suppression de la valeur
       if (isSafari) {
+        alert("MVP Finish détecté ! (vérification initiale)");
         setIsDialogOpen(true);
       } else {
         window.location.href = '/recap';
@@ -187,6 +188,7 @@ export default function Page() {
       if (e.key === 'mvpFinish') {
         localStorage.removeItem('mvpFinish'); // Suppression de la valeur
         if (isSafari) {
+          alert("MVP Finish détecté ! (via le listener)");
           setIsDialogOpen(true);
         } else {
           window.location.href = '/recap';
@@ -194,12 +196,30 @@ export default function Page() {
       }
     };
 
-    // Ajout du listener
+    // Ajout d'un listener direct sur window.localStorage
+    const checkLocalStorage = () => {
+      const mvpFinishValue = localStorage.getItem('mvpFinish');
+      if (mvpFinishValue) {
+        localStorage.removeItem('mvpFinish');
+        if (isSafari) {
+          alert("MVP Finish détecté ! (via l'intervalle)");
+          setIsDialogOpen(true);
+        } else {
+          window.location.href = '/recap';
+        }
+      }
+    };
+
+    // Vérification toutes les 100ms
+    const interval = setInterval(checkLocalStorage, 100);
+
+    // Ajout du listener storage
     window.addEventListener('storage', handleStorageChange);
 
-    // Nettoyage du listener
+    // Nettoyage
     return () => {
       window.removeEventListener('storage', handleStorageChange);
+      clearInterval(interval);
     };
   }, [isSafari]);
 
