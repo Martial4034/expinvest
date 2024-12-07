@@ -308,7 +308,7 @@ const OxeltaInfo: React.FC = () => {
                       const value = Number(e.target.value);
                       setInvestment({ ...investment, amount: value });
                     }}
-                    className="w-40 bg-transparent text-3xl text-[#00FFFB] quantico-title text-center focus:outline-none border-none"
+                    className="w-40 h-10 mt-[-1rem] bg-transparent text-3xl text-[#00FFFB] quantico-title text-center focus:outline-none border-none"
                   />
                   <span className="text-3xl text-[#00FFFB] quantico-title ml-2">$</span>
                 </div>
