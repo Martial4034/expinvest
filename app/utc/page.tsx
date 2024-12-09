@@ -4,7 +4,7 @@ import { useEffect, useRef, useState, useCallback } from 'react';
 import { loadingPhrases } from './LoadingPhrases';
 import { Button } from "@/app/components/ui/button"; 
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/app/components/ui/dialog";
-
+import { useTranslation } from "@/app/hooks/useTranslation";
 
 interface UnityConfig {
   dataUrl: string;
@@ -47,6 +47,7 @@ export default function Page() {
   const [isSafari, setIsSafari] = useState(false);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [pendingRedirect, setPendingRedirect] = useState(false);
+  const { t } = useTranslation();
 
   useEffect(() => {
     // Détection du navigateur Safari
@@ -175,7 +176,7 @@ export default function Page() {
     if (localStorage.getItem('mvpFinish')) {
       localStorage.removeItem('mvpFinish'); // Suppression de la valeur
       if (isSafari) {
-        alert("MVP Finish détecté ! (vérification initiale)");
+        alert(`${t('recap', 'alertUtc')}`);
         setIsDialogOpen(true);
       } else {
         window.location.href = '/recap';

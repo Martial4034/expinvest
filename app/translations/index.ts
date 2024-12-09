@@ -71,6 +71,7 @@ export const translations = {
       bet: "BET"
     },
     recap: {
+      alertUtc: "You now have finished the simulation, you will be redirected to the recap page.",
       title: "In this simulation, you have increased the market value of the OXLT token",
       buyingPressure: "By buying tokens, you create buying pressure on the market, as the purchase is directly linked to it.",
       gameUsage: "By using them in our games, you have reduced the circulating supply and helped build an OXLT stock for Oxelta, intended to be resold in our games to generate revenue.",
@@ -155,6 +156,7 @@ export const translations = {
       bet: "PARIER"
     },
     recap: {
+      alertUtc: "Vous avez maintenant terminé la simulation, vous serez redirigé vers la page de recap.",
       title: "Dans cette simulation vous avez augmentez la valeur marchande du token OXLT",
       buyingPressure: "En achetant des tokens, vous créez une pression acheteuse sur le marché, car l'achat est directement lié à celui-ci.",
       gameUsage: "En les utilisant dans nos jeux, vous avez réduit l'offre en circulation et contribué à constituer un stock d'OXLT pour Oxelta, destiné à être revendu dans nos jeux pour générer des revenus.",
