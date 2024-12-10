@@ -189,7 +189,7 @@ export default function Page() {
       if (e.key === 'mvpFinish') {
         localStorage.removeItem('mvpFinish'); // Suppression de la valeur
         if (isSafari) {
-          alert("MVP Finish détecté ! (via le listener)");
+          alert("MVP Finish ! Please click on the button below to go to the recap.");
           setIsDialogOpen(true);
         } else {
           window.location.href = '/recap';
