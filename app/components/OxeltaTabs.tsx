@@ -13,7 +13,6 @@ export function OxeltaTabs() {
 
   const tabs = [
     { id: 'tab1', label: 'OXLT' },
-    { id: 'tab2', label: 'Oxo Warrior' },
     { id: 'tab4', label: 'Games' },
   ];
 
@@ -21,8 +20,6 @@ export function OxeltaTabs() {
     switch (activeTab) {
       case 'tab1':
         return <Tab1Content />;
-      case 'tab2':
-        return <Tab2Content />;
       case 'tab4':
         return <Tab4Content />;
       default:
